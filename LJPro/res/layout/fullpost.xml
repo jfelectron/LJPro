@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/container"
+
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="#000000"
+  >
+    <View android:id="@+id/pheader" android:background="@drawable/fullpostheader" 
+    android:layout_width="fill_parent" 
+ 
+  android:layout_height="100dp"></View>
+      <ImageView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/duserpic"
+     android:layout_height="50dp"
+     android:layout_marginLeft="10dp"
+     android:layout_marginTop="10dp"
+     android:layout_width="50dp"
+     android:scaleType="centerCrop"
+     android:src="@drawable/defaultuserpic"
+    />  
+        <ImageView  xmlns:android="http://schemas.android.com/apk/res/android"       
+        android:layout_marginLeft="8dp" android:id="@+id/tframe" 
+       android:layout_marginTop="9dp" android:layout_width="55dp" 
+        android:layout_height="54dp" android:background="@drawable/tframe2"/>
+
+    <LinearLayout  android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_toRightOf="@+id/duserpic">
+	
+	
+	 
+      
+     <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="20dp"
+      android:singleLine="true"
+      android:layout_marginLeft="10dp"
+       android:layout_marginTop="10dp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:textColor="#FFF6D5"
+      android:layout_width="fill_parent"
+      android:id="@+id/uname"
+      ></TextView>
+         <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="16dp"
+      android:singleLine="true"
+      android:layout_marginLeft="10dp"
+       android:layout_marginTop="2dp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"
+      android:layout_width="fill_parent"
+      android:id="@+id/postername"
+      ></TextView>
+
+     
+      </LinearLayout>
+    
+       <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="14dp"
+      android:layout_below="@+id/duserpic"
+      android:layout_marginLeft="20dp"
+      android:layout_marginTop="12dp"
+      android:textStyle="bold"  
+      android:layout_centerHorizontal="true"
+      android:layout_height="wrap_content"
+      android:textColor="#FFF6D5"
+      android:layout_width="wrap_content"
+      android:id="@+id/date"
+      ></TextView>
+    
+ 
+     
+ 	  
+	<com.electronapps.LJPro.PostListView android:layout_width="fill_parent" android:layout_height="fill_parent"  android:layout_below="@+id/date" android:background="#000000" android:id="@android:id/list"/>
+	<ToggleButton android:id="@+id/starred"  android:focusable="false" android:textOn="" android:textOff="" android:layout_above="@android:id/list" android:layout_alignRight="@android:id/list" android:background="@drawable/starbutton" android:layout_width="30dp" android:layout_height="30dp" android:layout_marginRight="10dp" android:layout_marginBottom="30dp"></ToggleButton>
+   
+   
+      
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/tagbg"
+  android:layout_height="fill_parent">
+ <include android:id="@+id/uphotoheader" layout="@layout/headerpill" > </include>
+ <LinearLayout  android:layout_width="fill_parent" android:padding="10dp" android:orientation="vertical" android:gravity="right" android:layout_height="wrap_content" android:background="@drawable/linkbg" >
+
+
+      
+<Button style="@style/GreenButton" android:onClick="showProviderChoices" android:text="Add Account"></Button>
+
+	<EditText android:id="@+id/phototitle" android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="Title (optional)"></EditText>
+    <TextView android:layout_marginTop="10dp"  android:textStyle="bold" android:layout_width="fill_parent" android:textColor="#FFFFFF" android:layout_height="wrap_content" android:gravity="center" android:textSize="20dp" android:text="Post Display Size" ></TextView>
+  	<TextView android:id="@+id/photoSize" android:layout_width="fill_parent" android:textColor="#FFFFFF" android:layout_height="wrap_content" android:gravity="center" android:textSize="20dp" android:text="75 pixels" ></TextView>
+  	<SeekBar android:id="@+id/sizeSeek" android:layout_marginBottom="5dp" android:layout_width="fill_parent" android:enabled="false" android:layout_height="wrap_content"  ></SeekBar>
+ <ListView android:layout_width="fill_parent"  android:layout_weight="1" android:layout_height="fill_parent" android:id="@android:id/list"/>
+</LinearLayout>
+ <TextView android:id="@id/android:empty"
+ 
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+              android:textColor="#FFFFFF"
+              android:textStyle="bold"
+              android:textSize="20dp"
+               android:text="Loading Accounts..."/>
+       
+
+</LinearLayout>

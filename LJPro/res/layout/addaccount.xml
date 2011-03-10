@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:background="@drawable/postcontainer"
+
+                 >
+<TextView android:id="@+id/aaheader" style="@style/HeaderPill" android:text="@string/add_account" />
+   
+
+    <EditText android:id="@+id/uname" 
+   			 android:hint="@string/username"
+              android:layout_width="fill_parent" 
+              android:capitalize="none"
+              android:layout_height="wrap_content" 
+              android:singleLine="true"
+              android:textSize="20dp"
+              android:layout_marginTop="30dp"
+              android:background="@android:drawable/editbox_background"
+              android:layout_below="@id/aaheader" 
+              />
+              
+              <EditText android:id="@+id/pwd" 
+              android:hint="@string/password"
+              android:password="true"
+              android:singleLine="true"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:layout_marginTop="10dp"
+              android:textSize="20dp"
+              android:background="@android:drawable/editbox_background"
+              android:layout_below="@id/uname" />
+  
+    <Button android:id="@+id/signin" 
+    		style="@style/GreenButton"
+    		android:onClick="doSignIn" 
+            android:layout_below="@id/pwd"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/signin" />
+
+    <Button 
+    		style="@style/GreenButton"
+    		android:onClick="doNewAcct" 
+            android:layout_toLeftOf="@id/signin"
+            android:layout_alignTop="@id/signin"
+            android:text="@string/noacct" />
+</RelativeLayout>

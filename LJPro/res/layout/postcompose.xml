@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/newpost" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+	 xmlns:panel="http://schemas.android.com/apk/res/com.electronapps.LJPro"
+	
+	android:background="#D1E0D6">
+
+	
+   <org.panel.Panel android:background="#7D000000" android:id="@+id/panel1" android:layout_height="wrap_content"  
+      panel:position="top" 
+   panel:animationDuration="500" panel:linearFlying="true" panel:openedHandle="@drawable/top_switcher_expanded_background" 
+   panel:closedHandle="@drawable/top_switcher_collapsed_background" android:layout_width="75dp" >
+	<Button   android:id="@+id/panelHandle" android:layout_width="75dp" android:layout_height="35dp">></Button>
+	<RelativeLayout android:background="@drawable/snippet" android:id="@+id/panelContent" android:layout_height="fill_parent" android:layout_width="fill_parent">
+		<com.example.coverflow.CoverFlow  android:id="@+id/userpics" android:background="#000000" android:layout_width="fill_parent" android:layout_height="100dp"></com.example.coverflow.CoverFlow>
+		<Spinner android:id="@+id/usejournals" android:prompt="@string/usejournals_prompt" android:layout_below="@+id/userpics" android:layout_width="fill_parent"  android:layout_height="wrap_content" ></Spinner>	
+		<Spinner android:id="@+id/security" android:prompt="@string/security_prompt"  android:layout_below="@+id/usejournals" android:layout_width="fill_parent" android:layout_height="wrap_content" ></Spinner>	
+	</RelativeLayout>
+</org.panel.Panel>
+<org.panel.Panel android:id="@+id/panel2" android:background="#7D000000"  android:layout_toRightOf="@+id/panel1" android:layout_height="wrap_content" 
+      panel:position="top" 
+   panel:animationDuration="500" panel:linearFlying="true"  panel:openedHandle="@drawable/top_switcher_expanded_background" 
+   panel:closedHandle="@drawable/top_switcher_collapsed_background" android:layout_width="75dp">
+	<Button  android:id="@+id/panelHandle" android:layout_width="75dp" android:layout_height="35dp"></Button>
+	<RelativeLayout  android:background="@drawable/snippet"  android:id="@+id/panelContent" android:layout_height="fill_parent" android:layout_width="fill_parent">
+		<MultiAutoCompleteTextView android:id="@+id/tags" android:layout_width="fill_parent"  android:completionThreshold="1"  android:layout_height="wrap_content" android:hint="Tags"></MultiAutoCompleteTextView>		
+			<AutoCompleteTextView  android:id="@+id/mood" android:layout_below="@+id/tags" android:completionThreshold="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Mood" ></AutoCompleteTextView>
+			<CheckBox android:id="@+id/useloc" android:textColor="#FFFFFF"  android:layout_below="@+id/mood" android:layout_width="wrap_content"  android:layout_height="wrap_content"  android:text="Use Location?"></CheckBox>
+			<EditText android:id="@+id/coordinates"  android:enabled="false" android:layout_toRightOf="@+id/useloc"  android:visibility="gone" android:layout_below="@+id/mood" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Coordinates" ></EditText>
+			<EditText android:id="@+id/locstring" android:layout_below="@+id/useloc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Location" ></EditText>	
+	</RelativeLayout>
+</org.panel.Panel>
+
+<org.panel.Panel android:id="@+id/panel3" android:background="#7D000000"  android:layout_toRightOf="@+id/panel2" android:layout_height="wrap_content" 
+      panel:position="top" 
+   panel:animationDuration="500" panel:linearFlying="true"  panel:openedHandle="@drawable/top_switcher_expanded_background" 
+   panel:closedHandle="@drawable/top_switcher_collapsed_background" android:layout_width="75dp">
+	<Button  android:id="@+id/panelHandle" android:layout_width="75dp" android:layout_height="35dp"></Button>
+	<RelativeLayout  android:background="@drawable/snippet"  android:id="@+id/panelContent" android:layout_height="fill_parent" android:layout_width="fill_parent">
+		<Spinner android:id="@+id/allowcomments" android:prompt="@string/allow_comments" android:layout_width="fill_parent" android:layout_height="wrap_content"></Spinner>
+		<Spinner android:id="@+id/adultcontent" android:prompt="@string/adult_content" android:layout_below="@+id/allowcomments" android:layout_width="fill_parent" android:layout_height="wrap_content"></Spinner>
+		<Spinner android:id="@+id/screencomments" android:prompt="@string/screen_comments" android:layout_below="@+id/adultcontent" android:layout_width="fill_parent" android:layout_height="wrap_content"></Spinner>
+	</RelativeLayout>
+</org.panel.Panel>
+
+
+	 		
+<LinearLayout android:layout_centerHorizontal="true" android:layout_marginTop="40dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/buttonbar" android:orientation="horizontal">
+		<ToggleButton android:id="@drawable/boldbutton"
+			android:textOn="" android:textOff="" android:background="@drawable/boldbutton"
+			style="@style/stylebutton" />
+		<ToggleButton android:id="@drawable/italicbutton"
+			android:textOn="" android:textOff="" android:background="@drawable/italicbutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/stylebutton" android:background="@drawable/stylebutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/sizebutton" android:background="@drawable/sizebutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/colorbutton" android:background="@drawable/colorbutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/elementbutton" android:background="@drawable/elementbutton"
+			style="@style/stylebutton" />
+		
+		
+	</LinearLayout>
+	
+			
+			<LinearLayout android:layout_below="@+id/buttonbar" android:layout_weight="1" android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+			
+			<EditText android:id="@+id/postsubject"
+					
+				android:layout_height="wrap_content" android:layout_width="fill_parent"
+				android:singleLine="true" android:textSize="18dp" android:hint="Subject" />
+				<com.electronapps.LJPro.RichEditText android:layout_weight="1" android:gravity="top" android:layout_below="@+id/postsubject" android:layout_width="fill_parent" android:textSize="18dp" android:id="@+id/postbody" android:minLines="3" android:layout_height="fill_parent" android:hint="Post" android:inputType="textAutoCorrect|textLongMessage|textCapSentences|textMultiLine" android:layout_alignParentRight="true"></com.electronapps.LJPro.RichEditText>
+				<LinearLayout android:orientation="horizontal" android:gravity="right" android:layout_height="70dp" android:layout_width="fill_parent"> 
+			<Button  android:layout_alignParentLeft="true" android:text="Drafts" android:onClick="loadDrafts" android:id="@drawable/plus_button" style="@style/GreenButton" />
+			<Button  android:layout_alignParentRight="true" android:text="Post" android:onClick="addPost" android:id="@drawable/plus_button" style="@style/GreenButton" />
+			</LinearLayout>
+		
+			</LinearLayout>
+			
+			
+
+	
+	
+</RelativeLayout>

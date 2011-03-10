@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string-array name="syncChoices">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+         <item>6 hours</item>
+        <item>12 hours</item>
+    </string-array>
+    
+    <string-array name="syncValues">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>10800000</item>
+         <item>21600000</item>
+        <item>43200000</item>
+    </string-array>
+    
+    <string-array name="notifyChoices">
+    	<item>All</item>
+        <item>Recent Comments</item>
+        <item>Friends Page</item>
+        <item>LiveJournal Mail</item>
+    </string-array>
+    
+    <string-array name="notifyValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>  
+        <item>3</item>
+    </string-array>
+    
+     <string-array name="vibrateChoices">
+        <item>Never</item>
+        <item>Always</item>
+        <item>Only when ringer on vibrate</item>  
+    </string-array>
+    
+     <string-array name="vibrateValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>  
+    </string-array>
+    
+    
+    
+    
+    <string-array name="cacheChoices">
+        <item>150</item>
+        <item>300</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+    
+    <string-array name="cacheValues">
+        <item> 150</item>
+        <item>300</item>
+        <item> 500</item>
+        <item>1000</item>
+        
+       
+    </string-array>
+    
+    <string-array name="photoProviders">
+    <item>ScrapBook</item>
+    <item>Picasa</item>
+    <item>Flikr</item>
+    <item>PhotoBucket</item>
+    </string-array>
+    
+    <string-array name="photoValues">
+     <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    </string-array>
+    
+    <string-array name="securityChoices">
+    <item>Public</item>
+    <item>Friends Only</item>
+    <item>Just Me</item>
+    </string-array>
+    
+    <string-array name="securityValues">
+    	<item>0</item>
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    
+    
+    
+    
+    
+</resources>

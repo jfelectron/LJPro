@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+android:id="@+id/friendinfoheader" 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  <ImageView android:id="@+id/friendpic" android:layout_width="100dp" android:layout_height="100dp" android:scaleType="fitStart"></ImageView>
+  <TextView android:id="@+id/friendname" android:layout_toRightOf="@+id/friendpic" android:layout_height="wrap_content" android:textSize="20dp" android:layout_width="wrap_content"></TextView>
+</RelativeLayout>

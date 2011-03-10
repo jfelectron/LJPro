@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="@string/delete_community" android:id="@+id/delete_friend"></item>
+<item android:title="@string/view_community" android:id="@+id/view_community"></item>
+<item android:visible="true" android:enabled="true" android:title="@string/add_poster" android:id="@+id/addposter"></item>
+<item android:title="@string/view_journal" android:id="@+id/view_journal" android:visible="true" android:enabled="true"></item>
+
+</menu>

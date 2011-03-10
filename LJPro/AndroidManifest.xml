@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.electronapps.LJPro" android:versionCode="1"
+	android:versionName="1.0">
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
+	<application android:label="@string/app_name"
+
+		android:theme="@android:style/Theme.NoTitleBar" android:name="LJPro"
+		android:icon="@drawable/icon" android:debuggable="false">
+
+
+		<activity android:name=".Navigation"  />
+		<activity android:name=".FriendsPage"  android:launchMode="singleTop"/>
+
+		<activity android:name=".Accounts" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			<receiver android:name=".Accounts.LJAccountUpateReceiver">
+				<intent-filter>
+					<action android:name="com.electronapps.LJPro.intent.intent.loginupdated" />
+					<action android:name="com.electronapps.LJPro.intent.intent.xmlerror" />
+				</intent-filter>
+			</receiver>
+
+		</activity>
+
+		<activity android:name=".AddAccount" />
+		<activity android:name=".FullPost" />	
+		<activity android:windowSoftInputMode="adjustResize" android:launchMode="singleTop" android:name=".ReplyTo"></activity>
+	<activity android:name=".FriendsTab" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar"/>
+<activity android:name=".EditFriends" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar"/>
+	
+
+		<service android:enabled="true" android:name=".LJNet" >
+		<intent-filter>
+				<action android:name="com.electronapps.LJPro.intent.login" />
+				<action android:name="com.electronapps.LJPro.intent.alllogin" />
+				<action android:name="com.electronapps.LJPro.intent.newaccount" />
+				<action android:name="com.electronapps.LJPro.intent.getfriends" />
+				<action android:name="com.electronapps.LJPro.intent.postevent" />
+				<action android:name="com.electronapps.LJPro.intent.editevent" />
+				<action android:name="com.electronapps.LJPro.intent.getusertags" />
+				<action android:name="com.electronapps.LJPro.intent.editfriends" />
+				<action android:name="com.electronapps.LJPro.intent.editfriendgroups" />
+				<action android:name="com.electronapps.LJPro.intent.getfriendspage" />
+				<action android:name="com.electronapps.LJPro.intent.getrecentcomments" />
+				<action android:name="com.electronapps.LJPro.intent.addcomment" />
+				<action android:name="com.electronapps.LJPro.intent.syncitems" />
+				<action android:name="com.electronapps.LJPro.intent.getcomments" />
+				<action android:name="com.electronapps.LJPro.intent.scrapbook" />
+				<action android:name="com.electronapps.LJPro.intent.picasa" />
+				<action android:name="com.electronapps.LJPro.intent.flickr" />
+				<action android:name="com.electronapps.LJPro.intent.photobucket" />
+			</intent-filter>
+			</service>
+	<activity android:name=".EditFriendGroups" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name="LJProPrefs"></activity>
+<receiver android:name=".LJAlarmReceiver">
+	<intent-filter android:priority="0">	
+		<action android:name="com.electronapps.LJPro.intent.syncfriendspage"></action>
+		<action android:name="com.electronapps.LJPro.intent.syncfriends"></action>
+		<action android:name="com.electronapps.LJPro.intent.friendspageupdated"></action>
+	<action android:name="android.intent.action.BOOT_COMPLETED"></action>
+</intent-filter>
+</receiver>
+<activity android:name=".NewPost" android:windowSoftInputMode="adjustResize"></activity>
+<activity android:name=".UploadPhoto"></activity>
+<activity android:name=".Authenticate"></activity>
+</application>
+
+
+
+
+
+
+	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8"/>
+
+
+	
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+	 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+<uses-permission android:name="android.permission.INTERNET"/>
+
+
+
+<uses-permission android:name="android.permission.WAKE_LOCK"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> 
+
+
+
+
+<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+
+<uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+</manifest> 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="fill_parent"
+	android:gravity="center_horizontal"
+	>
+	<LinearLayout  android:layout_width="fill_parent"  android:layout_height="wrap_content" >
+	<RadioGroup android:id="@+id/rgroup" android:orientation="horizontal" android:layout_width="fill_parent"  android:layout_height="wrap_content"  >
+	<RadioButton android:id="@+id/bgcolor" android:text="Background"  android:layout_width="wrap_content"  android:layout_height="wrap_content"></RadioButton>
+	<RadioButton android:id="@+id/fgcolor" android:text="Text Color" android:layout_width="wrap_content"  android:layout_height="wrap_content"></RadioButton>
+	
+	</RadioGroup>
+	</LinearLayout>
+	
+	<include
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/ambilwarna_includePemilih"
+		layout="@layout/ambilwarna_pemilih" />
+
+
+	<LinearLayout   android:layout_marginTop="10dp" android:gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+		<Button  android:gravity="center_horizontal" style="@style/GreenButton" android:id="@+id/setcolor" android:layout_width="100dp" android:layout_height="wrap_content"  android:text="OK" ></Button>
+			<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:padding="10dp"
+		android:background="#FF000000"
+		>
+		
+	
+		<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/preview" android:textSize="20dp" android:text="@string/preview"></TextView>
+			
+	</LinearLayout>
+		<Button  android:gravity="center_horizontal" style="@style/GreenButton"  android:id="@+id/cancel" android:layout_width="100dp" android:layout_height="wrap_content"  android:text="Default" ></Button>
+		
+	</LinearLayout>
+
+
+
+</LinearLayout>

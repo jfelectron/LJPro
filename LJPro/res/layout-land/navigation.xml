@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+ android:background="@drawable/weathered" android:layout_width="fill_parent" android:layout_height="fill_parent" >
+ <TextView style="@style/HeaderPill" android:id="@+id/journal_name" android:text="jfelectron" />
+ <ScrollView  android:layout_below="@id/journal_name" android:layout_width="fill_parent"  android:layout_height="wrap_content" >
+	<TableLayout  android:layout_width="fill_parent" android:background="@android:color/transparent" android:layout_height="fill_parent" >
+		<TableRow android:layout_width="wrap_content">
+			<ImageButton android:id="@+id/journal_button" android:background="@drawable/navcontainer" android:src="@drawable/journal_button" android:clickable="true" android:layout_width="wrap_content" android:layout_marginRight="20dp" android:layout_marginLeft="20dp" android:layout_margin="20dp"/>
+			<ImageButton android:id="@+id/friends_button" android:background="@drawable/navcontainer" android:src="@drawable/friends_button" android:clickable="true" android:layout_width="wrap_content" android:layout_marginRight="20dp" android:layout_marginLeft="20dp" android:layout_margin="20dp"/>
+			<ImageButton android:clickable="true" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_width="wrap_content" android:background="@drawable/navcontainer" android:id="@+id/write_button" android:src="@drawable/write_button" android:layout_margin="20dp" android:layout_marginRight="20dp"></ImageButton>
+</TableRow>
+			<TableRow android:layout_width="wrap_content">
+			
+			<ImageButton android:id="@+id/mail_button" android:background="@drawable/navcontainer" android:src="@drawable/mail_button" android:clickable="true" android:layout_width="wrap_content" android:layout_marginRight="20dp" android:layout_marginLeft="20dp" android:layout_margin="20dp"/>
+			</TableRow>
+		
+	</TableLayout>
+	</ScrollView>
+	</RelativeLayout>

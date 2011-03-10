@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel">Cancel</string>
+    <string name="cut_text_">Link Text...</string>
+    <string name="finding_location_">Finding Location...</string>
+    <string name="friendspage_updated_">FriendsPage Updated</string>
+    <string name="adding_">Adding </string>
+    <string name="as_friend">as friend</string>
+    <string name="deleting_">Deleting </string>
+    <string name="view_journal">View Journal</string>
+    <string name="delete_friend">Delete Friend</string>
+    <string name="comment_added_">Comment Added!</string>
+    <string name="error_adding_comment">Error adding comment</string>
+    <string name="erro_adding_comment">Erro adding comment</string>
+    <string name="on">on</string>
+    <string name="in_reply_to">In reply to</string>
+    <string name="adding_comment">Adding comment</string>
+    <string name="network_error">Network Error</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="in_replay_to_">In Reply To: \s\s </string>
+    <string name="syncing_friendspage">Syncing FriendsPage</string>
+    <string name="_friendspage"> FriendsPage</string>
+    <string name="fetching_">Fetching </string>
+    <string name="syncing_livejournal_data">Syncing LiveJournal Data</string>
+    <string name="accountexists">Account Already exists</string>
+    <string name="accounts">LiveJournal Accounts</string>
+    <string name="add_account">Add LiveJournal Account</string>
+    <string name="aatext">Please Enter Account Info:</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="signin">Sign In...</string>
+    <string name="noacct">Create Account?</string>
+    <string name="showpw">Show Password?</string>
+    <string name="signon">Signing into LiveJournal, please wait...</string>
+    <string name="xmlerror">An error occurred communicating with LiveJournal.Please try again.</string>
+    <string name="wrongpw">Wrong username or password. Please re-enter.</string>
+    <string name="ok">OK</string>
+    <string name="addaccount">Add Account</string>
+    <string name="settings">Settings</string>
+    <string name="deleteuser">Remove Account</string>
+    <string name="editfriends">Edit Friends</string>
+    
+<string name="help">Help</string>
+<string name="refresh">Refresh</string>
+<string name="refreshing">Refreshing LJ account info, please wait....</string>
+<string name="alldone">All done updating accounts!</string>
+<string name="friends">Friends</string>
+<string name="updatingfriends">Updating Friends...</string>
+<string name="changepswd">Change Password</string>
+<string name="makedefault">Make Default</string>
+<string name="addfriend">Add Friend</string>
+<string name="removefriends">Delete Checked</string>
+<string name="editgroups">Edit Groups</string>
+<string name="markdelete">Mark for Deletion</string>
+<string name="friendinfo">Friend Info</string>
+<string name="unmarkdelete">Unmark for Deletion</string>
+<string name="confirmdel">Confirm Deletion</string>
+<string name="nochecked">No Friends are Checked</string>
+<string name="adding">Adding friend please wait...</string>
+<string name="friendadded">Friend Added!</string>
+<string name="friendsupdated">Friends Updated!</string>
+<string name="frienddelted">Friend Deleted!</string>
+<string name="deleting">Deleting Friends please wait...</string>
+<string name="editfgroups">Edit Friend Groups</string>
+
+<string name="changing">Editing Friend Groups</string>
+<string name="nofgroups">No Friend Groups Exist</string>
+<string name="addfriendgroup">Add Friend Group</string>
+<string name="editgroupfriends">Edit Friends</string>
+<string name="friendgroupname">Friend Group Name</string>
+<string name="nofgchecked">No Groups Checked</string>
+<string name="updatingfgroups">Updating Groups...</string>
+<string name="maxfriendgroups">Max Number of Groups</string>
+<string name="maxfgroupsmsg">You have the maximum number of 30 groups. Please remove existimg groups to add another.</string>
+<string name="publicvisible">Public</string>
+
+<string name="groupsupdated">Groups Updated</string>
+<string name="groupadded">Group Added</string>
+<string name="friendspage">Friends Page</string>
+
+<string name="updatingfpage">Updating Friends Page...</string>
+<string name="changeuname">Change Credentials</string>
+<string name="app_name">LJPro</string>
+<string name="loginreqs">A username and password are required</string>
+<string name="filterprompt">Filter Friends Page</string>
+<string name="manuallogin">Clear Default</string>
+<string name="allfriends">All Friends</string>
+<string name="jonly">Journals Only</string>
+<string name="conly">Communities Only</string>
+<string name="sonly">Syndicated Feeds</string>
+<string name="refreshold">Refetch Older</string>
+<string name="update">Update</string>
+<string name="setfilter">Set Filter</string>
+<string name="refetchfp">Refetch FriendsPage?</string>
+<string name="refetchmsg">Click Yes to update with added friend\'s previous entries.This will run in the background for several minutes.</string>
+<string name="subject">Subject</string>
+<string name="comment">Comment</string>
+<string name="underline">Underline</string>
+
+<string name="blockquote">Blockquote</string>
+<string name="superscript">Superscript</string>
+<string name="subscript">Subscript</string>
+<string name="add_poster">Add Poster as Friend</string>
+<string name="delete_friend">Delete Friend</string>
+
+
+<string name="delete_community">Remove community </string>
+<string name="view_community">View Community</string>
+<string name="security_prompt">Show entry to</string>
+
+<string name="usejournals_prompt">Post to</string>
+
+<string-array name="security_levels">
+<item>Public</item>
+<item>Friends Only</item>
+<item>Just Me</item>
+<item>Custom...</item>
+</string-array>
+
+<string-array name="allow_comments">
+
+<item>Journal Default</item>
+<item>Disabled</item>
+<item>Don\'t Notify</item>
+</string-array>
+
+<string-array name="screen_comments">
+<item>Journal Default</item>
+<item>Disabled</item>
+<item>Anonymous Only</item>
+<item>Non-Friends</item>
+<item>Non-Friends with Links</item>
+<item>All comments</item>
+</string-array>
+
+<string-array name="adult_content">
+	<item>Journal Default</item>
+	<item>None</item>
+	<item>Adult Concepts</item>
+	<item>Explicit Content</item>
+</string-array>
+
+<string name="allow_comments">Allow Comments</string>
+<string name="screen_comments">Screen Comments</string>
+<string name="adult_content">Adult Content</string>
+
+
+
+</resources>
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/commentbg">
+
+	
+
+	<LinearLayout android:layout_centerHorizontal="true"
+		android:layout_marginTop="5dp" android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/buttonbar"
+		android:layout_below="@+id/replyheader" android:orientation="horizontal">
+		<ToggleButton android:id="@drawable/boldbutton"
+			android:textOn="" android:textOff="" android:background="@drawable/boldbutton"
+			style="@style/stylebutton" />
+		<ToggleButton android:id="@drawable/italicbutton"
+			android:textOn="" android:textOff="" android:background="@drawable/italicbutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/stylebutton" android:background="@drawable/stylebutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/sizebutton" android:background="@drawable/sizebutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/colorbutton" android:background="@drawable/colorbutton"
+			style="@style/stylebutton" />
+		<Button android:id="@drawable/plus_button" android:background="@drawable/plus_button"
+			style="@style/stylebutton" />
+		
+	</LinearLayout>
+
+	<ScrollView android:layout_below="@+id/buttonbar"
+		android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+
+			<EditText android:id="@+id/commentsubject"
+				android:layout_height="wrap_content" android:layout_width="fill_parent"
+				android:singleLine="true" android:textSize="18dp" android:hint="Subject" />
+			<com.electronapps.LJPro.RichEditText
+				android:id="@+id/commentbody" android:hint="Comment"
+				android:textSize="18dp" android:layout_below="@+id/commentsubject"
+				android:layout_height="wrap_content" android:minLines="5"
+				android:inputType="textAutoCorrect|textLongMessage|textCapSentences|textMultiLine"
+				android:layout_width="fill_parent" />
+
+
+			<TextView android:layout_below="@+id/commentbody"
+				android:background="@drawable/commentdiv" android:id="@+id/div"
+				android:layout_width="fill_parent" android:layout_height="30dp"
+				android:gravity="center_horizontal" android:textStyle="bold"
+				android:textSize="16dp" android:textColor="#FFFFFFFF" />
+
+			<com.electronapps.LJPro.PostView
+				android:layout_width="fill_parent" android:typeface="sans"
+				android:id="@+id/post" android:layout_marginTop="10dp"
+				android:layout_below="@+id/div" android:background="@drawable/snippet"
+				android:textSize="16dp" android:layout_height="wrap_content"
+				android:textColor="#FFFFFF" />
+
+		</RelativeLayout>
+	</ScrollView>
+</RelativeLayout>

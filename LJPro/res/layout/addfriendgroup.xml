@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout   xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/addfgroupfooter" android:visibility="gone" android:layout_alignParentBottom="true"  android:background="@color/footer" android:layout_width="fill_parent" android:layout_height="100dp">
+<TableRow android:layout_width="fill_parent" android:layout_height="50dp">
+<EditText android:id="@+id/addfriend" 
+   			  android:hint="@string/friendgroupname"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:padding="5dp"
+              android:singleLine="true"
+              android:textSize="20dp"
+              android:background="@android:drawable/editbox_background"
+             ></EditText>-
+             <Button style="@style/PlusButton"  android:id="@+id/pfriendbutton" android:layout_centerVertical="true" android:layout_toRightOf="@+id/addfriend"></Button>
+              
+              </TableRow>
+              <TableRow  android:layout_width="fill_parent"  android:layout_height="25dp"><CheckBox android:id="@+id/publicvis" android:layout_centerHorizontal="true" android:textColor="#000000" android:textStyle="bold" android:layout_width="wrap_content" android:text="@string/publicvisible" android:layout_height="wrap_content" /></TableRow>
+              </TableLayout>

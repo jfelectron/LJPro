@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  
+  android:id="@+id/postbody" 
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:paddingLeft="10dp"
+ 	  android:paddingRight="10dp">
+  
+         <TextView 
+     android:layout_centerHorizontal="true"
+     android:paddingRight="10dp"
+     android:paddingLeft="10dp"
+      android:textSize="18dp"
+      android:layout_marginTop="15dp"
+      android:textStyle="bold"
+      android:background="#000000"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"
+      android:layout_width="wrap_content"
+      android:layout_weight="1"
+      android:id="@+id/subject"
+      ></TextView>   
+ <com.electronapps.LJPro.PostView 
+ 	  android:layout_width="fill_parent"
+ 	  android:typeface="sans"   android:id="@+id/post" 
+ 	  android:layout_marginTop="10dp"
+ 	  android:layout_below="@+id/subject"
+ 	  android:background="#000000"
+ 	  android:textSize="16dp"
+ 	  android:layout_height="wrap_content" 
+ 	  android:textColor="#FFFFFF" />
+ 	 
+	 	<TextView  android:visibility="gone" android:layout_below="@+id/replyto" 
+	 	android:id="@+id/posterlocation" 
+	 	android:layout_marginTop="5dp" android:layout_height="wrap_content" 
+	 	android:layout_width="fill_parent" android:textColor="#0F3F8C" 
+	 android:textStyle="bold" ></TextView> 
+	 	<TextView android:visibility="gone" android:layout_below="@+id/posterlocation"  android:id="@+id/posttags"  
+	 	android:padding="2dp" android:layout_gravity="center" 
+	 	android:textColor="#FFFFFF" 
+	 	android:layout_height="wrap_content" android:layout_width="fill_parent" 
+	 	></TextView> 
+	 	 <Button android:id="@+id/replyto"  android:clickable="true" android:layout_below="@+id/post" android:layout_alignParentRight="true" android:padding="10dp" android:layout_height="wrap_content" 
+	 android:layout_width="wrap_content" android:background="@drawable/replybg"></Button>
+</RelativeLayout>

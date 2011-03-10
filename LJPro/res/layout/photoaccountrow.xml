@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_margin="10dp"
+  android:paddingBottom="10dp"
+  android:layout_height="wrap_content"
+  android:background="@drawable/postheaderbg">
+ 
+  
+
+    <ImageView android:id="@+id/providerIcon" android:layout_width="50dp" android:layout_height="50dp"></ImageView>
+   	<LinearLayout  android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_toRightOf="@+id/providerIcon">
+	
+	
+	 
+      
+     <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="20dp"
+      android:singleLine="true"
+      android:layout_marginLeft="10dp"
+       android:layout_marginTop="5dp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:textColor="#FFF6D5"
+      android:layout_width="fill_parent"
+      android:id="@+id/provider"
+      ></TextView>
+         <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="16dp"
+      android:singleLine="true"
+      android:layout_marginLeft="10dp"
+       android:layout_marginTop="2dp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"
+      android:layout_width="fill_parent"
+      android:id="@+id/uname"
+      ></TextView>
+
+     
+      </LinearLayout>
+</RelativeLayout>

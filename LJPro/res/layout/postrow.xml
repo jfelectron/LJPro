@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginBottom="5dp">
+    <LinearLayout android:background="@drawable/postbackground" 
+    android:layout_width="fill_parent"
+ 	android:layout_height="wrap_content" 
+ 	android:orientation="vertical"
+      > 
+        <TextView 
+       
+     android:layout_centerHorizontal="true"
+      android:textSize="14dp"
+      android:layout_marginTop="95dp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:textColor="#000000"
+      android:layout_width="wrap_content"
+      android:layout_weight="1"
+      android:id="@+id/subject"
+      ></TextView>    
+ 	 <TextView android:layout_width="fill_parent"
+ 	  android:typeface="sans"   android:id="@+id/snippet" 
+ 	  android:layout_marginTop="5dp"
+ 	  android:layout_below="@+id/subject"
+ 	  android:layout_height="wrap_content" 
+ 	  android:background="@drawable/snippetbg"
+ 	  android:textColor="#FFFFFF" />
+ 	  
+	  <LinearLayout android:layout_marginTop="5dp" 
+	  android:layout_height="wrap_content" android:layout_width="fill_parent" 
+	  android:orientation="horizontal">
+	  
+	   <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" 
+	   android:layout_width="0dp" android:layout_weight="1">
+	 	<TextView android:visibility="gone" android:id="@+id/posterlocation" 
+	 	android:layout_marginTop="5dp" android:layout_height="wrap_content" 
+	 	android:layout_width="fill_parent" android:textColor="#0F3F8C" 
+	 android:textStyle="bold"></TextView> 
+	 	<TextView android:visibility="gone" android:id="@+id/posttags"  
+	 	android:padding="2dp" android:layout_gravity="center" 
+	 	android:textColor="#000000"
+	 	android:layout_height="wrap_content" android:layout_width="fill_parent" 
+	 	></TextView> 
+	 </LinearLayout>
+	 <Button android:id="@+id/commentcount" android:layout_gravity="right" android:layout_height="wrap_content" 
+	 android:text="0" android:textSize="14dp" android:textStyle="bold" android:focusable="false"
+	 android:layout_width="wrap_content" android:background="@drawable/commentbubble"></Button>
+	 </LinearLayout>
+   
+       
+      
+</LinearLayout>
+  
+  <ImageView  android:id="@+id/pheader" android:background="@drawable/postheaderbg" 
+    android:layout_width="fill_parent" 
+ 
+  android:layout_height="100dp"></ImageView>
+    <ToggleButton android:layout_marginRight="15dp" android:layout_alignParentRight="true"  android:focusable="false" android:textOn="" android:textOff="" android:layout_width="30dp" android:id="@+id/starred" android:background="@drawable/starbutton" android:layout_marginBottom="5dp" android:layout_marginTop="30dp" android:layout_height="30dp" ></ToggleButton>
+ 
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/duserpic"
+     android:layout_height="50dp"
+     android:layout_marginLeft="10dp"
+     android:layout_marginTop="10dp"
+     android:layout_width="50dp"
+     android:scaleType="centerCrop"
+     android:src="@drawable/defaultuserpic"
+    />  
+        <ImageView  xmlns:android="http://schemas.android.com/apk/res/android"       
+        android:layout_marginLeft="8dp" android:id="@+id/tframe" 
+       android:layout_marginTop="9dp" android:layout_width="55dp" 
+        android:layout_height="54dp" android:background="@drawable/tframe2"/>
+	<LinearLayout  android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_toRightOf="@+id/duserpic">
+	
+	
+	 
+      
+     <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="20dp"
+      android:singleLine="true"
+      android:layout_marginLeft="10dp"
+       android:layout_marginTop="10dp"
+      android:textStyle="bold"
+      android:layout_height="25dp"
+      android:textColor="#FFF6D5"
+      android:layout_width="fill_parent"
+      android:id="@+id/uname"
+      ></TextView>
+         <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="14dp"
+      android:singleLine="true"
+      android:layout_marginLeft="10dp"
+       android:layout_marginTop="2dp"
+      android:textStyle="bold"
+      android:layout_height="25dp"
+      android:textColor="#FFFFFF"
+      android:layout_width="fill_parent"
+      android:id="@+id/postername"
+      ></TextView>
+
+     
+      </LinearLayout>
+    
+       <TextView  xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:textSize="12dp"
+      android:layout_below="@+id/duserpic"
+      android:layout_marginLeft="20dp"
+      android:layout_marginTop="12dp"
+      android:textStyle="bold"  
+      android:layout_centerHorizontal="true"
+      android:layout_height="wrap_content"
+      android:textColor="#FFF6D5"
+      android:layout_width="wrap_content"
+      android:id="@+id/date"
+      ></TextView>
+      
+      
+   
+      
+ 
+      
+     
+</RelativeLayout>

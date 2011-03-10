@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/weathered" android:layout_width="fill_parent" android:layout_height="fill_parent" >
+
+ <include layout="@layout/listcontainer"></include>
+<Spinner android:id="@+id/fpfilter"
+		android:layout_width="fill_parent"
+		android:layout_height="60dp"
+		 android:prompt="@string/filterprompt"
+         android:background="@drawable/greenbutton"/>
+<LinearLayout android:id="@+id/updatingfriends" android:orientation="horizontal" android:visibility="gone" android:layout_alignParentBottom="true"  android:background="@color/footer" android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+<TextView android:id="@+id/updatemsg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_gravity="center_vertical" android:textColor="#FFFFFFFF" android:textSize="20dp" android:text="@string/updatingfpage"/>
+<ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/updatingspinner" android:indeterminate="true" android:indeterminateOnly="true" android:layout_margin="5dp" style="?android:attr/progressBarStyleSmall"></ProgressBar>
+</LinearLayout>
+
+ </RelativeLayout>

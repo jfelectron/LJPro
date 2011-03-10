@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Accounts" android:enabled="true">
+		<CheckBoxPreference android:defaultValue="false"
+			android:key="autoLogin" android:enabled="true" android:title="Auto Login"
+			android:disableDependentsState="true" android:summaryOn="Auto login enabled" android:summaryOff="Auto login disabled"></CheckBoxPreference>
+		<ListPreference android:key="defaultlogin"
+			android:enabled="false" android:title="Default Account"
+			android:summary="Default account to auto login" android:dependency="autoLogin"></ListPreference>
+	</PreferenceCategory>
+	<CheckBoxPreference android:key="acra.disable"
+        android:summaryOn="Error Reporting Enabled" android:summaryOff="Error Reporting Disabled" android:title="Error Reporting" android:defaultValue="false"/>
+	<PreferenceCategory android:title="Settings Scope"><ListPreference android:key="settingScope" android:title="Choose Account" android:summary="Apply below settings to all accunts or a specific account"></ListPreference>
+</PreferenceCategory><PreferenceCategory android:title="Location and Security"><ListPreference android:defaultValue="1" android:key="securityPref" android:entries="@array/photoValues" android:title="Default Post Security" android:entryValues="@array/securityValues"></ListPreference><CheckBoxPreference android:defaultValue="false" android:summaryOn="Use Location By Default" android:summaryOff="Don't Use Location By Default" android:key="useLocation" android:title="Location for Posts"></CheckBoxPreference>
+</PreferenceCategory>
+<PreferenceCategory android:title="Adding Friends"><CheckBoxPreference android:title="Refetch on Add Friend" android:defaultValue="false" android:summaryOn="Fetch older entries when adding a friend" android:summaryOff="Don't fetch older entries when adding a friend" android:key="alwaysRefetchOnAdd"></CheckBoxPreference>
+</PreferenceCategory>
+	<PreferenceCategory android:title="Background Sync and Notifications">
+		<CheckBoxPreference android:key="backgroundSync"
+			android:defaultValue="false" android:enabled="true" android:title="Background Sync"
+			android:disableDependentsState="false" android:summaryOn="Background Sync Enabled" android:summaryOff="Disable Background Sync"></CheckBoxPreference>
+		<ListPreference android:key="syncFrequency"
+			android:title="Sync Frequency" android:defaultValue="900000" android:entries="@array/syncChoices"
+			android:entryValues="@array/syncValues" android:dependency="backgroundSync" android:summary="How often to sync"></ListPreference>
+		<CheckBoxPreference android:defaultValue="false"
+			android:key="syncWifi"
+			android:title="Sync Network Choice" android:dependency="backgroundSync" android:summaryOn="Only sync over WiFi" android:summaryOff="Sync over any connection"></CheckBoxPreference>
+
+
+
+	</PreferenceCategory>
+
+<PreferenceCategory android:title="Notification Settings">
+<CheckBoxPreference android:key="notifyEnabled" android:title="Notifications" android:enabled="true" android:summaryOn="Disable notifications" android:summaryOff="Enable notifications" android:disableDependentsState="false" android:defaultValue="false"></CheckBoxPreference>
+
+
+<com.threefiftynice.android.preference.ListPreferenceMultiSelect android:defaultValue="0" android:entryValues="@array/notifyValues" android:dependency="notifyEnabled" android:entries="@array/notifyChoices" android:title="Notification Types" android:summary="Choose what to be notified for" android:key="notifyWhat"> 
+</com.threefiftynice.android.preference.ListPreferenceMultiSelect>
+
+
+
+
+<ListPreference android:title="Vibrate" android:dependency="notifyEnabled" android:defaultValue="0" android:entries="@array/vibrateChoices" android:entryValues="@array/vibrateValues" android:key="notifyVibrate" android:summary="Vibrate on notification"></ListPreference>
+<RingtonePreference android:defaultValue='""' android:showDefault="true" android:dependency="notifyEnabled" android:key="notifySound" android:showSilent="true" android:ringtoneType="all" android:title="Sound" android:summary="Audible notification"></RingtonePreference>
+</PreferenceCategory>
+<PreferenceCategory android:title="Offline Cache"><ListPreference android:key="cacheDuration" android:entries="@array/cacheChoices" android:entryValues="@array/cacheValues" android:title="Fiends Page Cache" android:summary="Cache this many older posts" android:defaultValue="300"></ListPreference>
+<CheckBoxPreference android:key="journalCache" android:title="Your Journals" android:defaultValue="true" android:summaryOn="Cache your journals" android:summaryOff="Don't cache your journals"></CheckBoxPreference><CheckBoxPreference android:disableDependentsState="true" android:defaultValue="false" android:key="otherJournalsCache" android:title="Other Journals " android:summaryOn="Cache recently viewed journals" android:summaryOff="Don't cache recently viewed journals"></CheckBoxPreference>
+
+</PreferenceCategory>
+<PreferenceCategory android:title="Photo Uploading"><ListPreference android:key="photoProvider" android:title="Default Photo Repository" android:enabled="true" android:entries="@array/photoProviders" android:entryValues="@array/photoValues"></ListPreference>
+</PreferenceCategory>
+
+
+
+
+
+
+
+</PreferenceScreen>

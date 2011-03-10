@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewSwitcher
+	android:id="@+id/footerswitcher"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+
+<RelativeLayout android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"  >
+ <Button android:id="@+id/commentcount"  android:layout_marginLeft="10dp" android:layout_height="wrap_content" 
+	 android:text="0" android:textSize="14dp"  android:textStyle="bold"  
+	 android:layout_width="wrap_content" android:background="@drawable/commentbubble"></Button>
+<Button 
+    android:id="@+id/btn_loadcomments"
+    android:text="Load Comments"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:layout_toRightOf="@+id/commentcount" 
+    android:textAppearance="?android:attr/textAppearanceLarge" 
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:textColor="#FFFFFF" 
+    android:background="@android:drawable/list_selector_background" 
+    android:clickable="true" 
+    />
+    </RelativeLayout>
+    <RelativeLayout 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal" 
+    android:minHeight="?android:attr/listPreferredItemHeight">
+
+    <ProgressBar 
+        android:id="@+id/progressbar"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:layout_centerVertical="true" />
+
+    <TextView 
+        android:text="Loading…" 
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/progressbar" 
+        android:layout_centerVertical="true" 
+        android:gravity="center"
+        android:padding="10dip"
+        android:textColor="#FFFFFF" />
+</RelativeLayout>
+    
+</ViewSwitcher>

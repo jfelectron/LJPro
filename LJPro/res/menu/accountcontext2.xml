@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item android:title="@string/editfriends" android:id="@+id/editfriends" android:visible="true" android:enabled="true"></item>
+<item android:title="@string/editgroups" android:id="@+id/editgroups" android:visible="true" android:enabled="true"></item>
+<item android:title="@string/manuallogin" android:id="@+id/manuallogin" android:visible="true" android:enabled="true"></item>
+<item android:title="@string/changeuname" android:id="@+id/changeuname" android:visible="true"  android:enabled="true"></item>
+<item android:title="@string/deleteuser" android:id="@+id/deluser" android:visible="true" android:enabled="true"></item>
+</menu>

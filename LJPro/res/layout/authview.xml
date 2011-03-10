@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:background="@drawable/linkbg" 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+    android:orientation="vertical">
+<include android:id="@+id/authheader"  layout="@layout/headerpill" > </include>
+<ProgressBar android:progressDrawable="@android:drawable/progress_horizontal" android:layout_width="fill_parent" android:layout_height="20dp" android:id="@+id/status_progress" android:indeterminate="false" android:indeterminateOnly="false"></ProgressBar>
+
+<ProgressBar android:layout_marginTop="10dp" android:id="@+id/webprogress" android:progressDrawable="@android:drawable/progress_horizontal" android:layout_width="fill_parent" android:layout_height="5dp"  android:indeterminate="false" android:indeterminateOnly="false"></ProgressBar>
+
+<WebView android:id="@+id/authweb" android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:layout_weight="1" ></WebView>
+  <LinearLayout android:padding="5dp" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+  <Button style="@style/GreenButton" android:onClick="handleClick" android:id="@+id/done" android:text="Finish" android:layout_weight="1" android:layout_width="fill_parent"></Button>
+  <Button style="@style/GreenButton"  android:onClick="handleClick" android:id="@+id/cancel" android:text="Cancel" android:layout_weight="1" android:layout_width="fill_parent"></Button>
+  </LinearLayout>
+</LinearLayout>

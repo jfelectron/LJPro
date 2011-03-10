@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"  android:background="@drawable/snippetbg">
+  <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="18dp" android:textColor="#FFFFFF" android:text="@string/refetchmsg"></TextView>
+  <CheckBox   android:id="@+id/alwaysadd" android:layout_width="wrap_content"
+  android:layout_height="wrap_content" android:text="Always Update on Add?" ></CheckBox>	
+  <CheckBox  android:id="@+id/neveradd" android:layout_width="wrap_content"
+  android:layout_height="wrap_content"  android:text="Never Update on Add?"></CheckBox>
+</LinearLayout>
