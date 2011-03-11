@@ -5,11 +5,11 @@
 			android:key="autoLogin" android:enabled="true" android:title="Auto Login"
 			android:disableDependentsState="true" android:summaryOn="Auto login enabled" android:summaryOff="Auto login disabled"></CheckBoxPreference>
 		<ListPreference android:key="defaultlogin"
-			android:enabled="false" android:title="Default Account"
-			android:summary="Default account to auto login" android:dependency="autoLogin"></ListPreference>
+			android:title="Default Account"
+			android:summary="Default account to auto login" android:dependency="autoLogin" android:enabled="true"></ListPreference>
 	</PreferenceCategory>
 	<CheckBoxPreference android:key="acra.disable"
-        android:summaryOn="Error Reporting Enabled" android:summaryOff="Error Reporting Disabled" android:title="Error Reporting" android:defaultValue="false"/>
+        android:title="Error Reporting" android:defaultValue="false" android:summaryOff="Error Reporting Enabled" android:summaryOn="Error Reporting Disabled"/>
 	<PreferenceCategory android:title="Settings Scope"><ListPreference android:key="settingScope" android:title="Choose Account" android:summary="Apply below settings to all accunts or a specific account"></ListPreference>
 </PreferenceCategory><PreferenceCategory android:title="Location and Security"><ListPreference android:defaultValue="1" android:key="securityPref" android:entries="@array/photoValues" android:title="Default Post Security" android:entryValues="@array/securityValues"></ListPreference><CheckBoxPreference android:defaultValue="false" android:summaryOn="Use Location By Default" android:summaryOff="Don't Use Location By Default" android:key="useLocation" android:title="Location for Posts"></CheckBoxPreference>
 </PreferenceCategory>
@@ -18,7 +18,7 @@
 	<PreferenceCategory android:title="Background Sync and Notifications">
 		<CheckBoxPreference android:key="backgroundSync"
 			android:defaultValue="false" android:enabled="true" android:title="Background Sync"
-			android:disableDependentsState="false" android:summaryOn="Background Sync Enabled" android:summaryOff="Disable Background Sync"></CheckBoxPreference>
+			android:summaryOn="Background Sync Enabled" android:summaryOff="Background Sync Disabled" android:disableDependentsState="true"></CheckBoxPreference>
 		<ListPreference android:key="syncFrequency"
 			android:title="Sync Frequency" android:defaultValue="900000" android:entries="@array/syncChoices"
 			android:entryValues="@array/syncValues" android:dependency="backgroundSync" android:summary="How often to sync"></ListPreference>
@@ -31,10 +31,10 @@
 	</PreferenceCategory>
 
 <PreferenceCategory android:title="Notification Settings">
-<CheckBoxPreference android:key="notifyEnabled" android:title="Notifications" android:enabled="true" android:summaryOn="Disable notifications" android:summaryOff="Enable notifications" android:disableDependentsState="false" android:defaultValue="false"></CheckBoxPreference>
+<CheckBoxPreference android:key="notifyEnabled" android:title="Notifications" android:enabled="true" android:disableDependentsState="false" android:defaultValue="false" android:dependency="backgroundSync" android:summaryOff="Notifications Disabled" android:summaryOn="Notifications Enabled"></CheckBoxPreference>
 
 
-<com.threefiftynice.android.preference.ListPreferenceMultiSelect android:defaultValue="0" android:entryValues="@array/notifyValues" android:dependency="notifyEnabled" android:entries="@array/notifyChoices" android:title="Notification Types" android:summary="Choose what to be notified for" android:key="notifyWhat"> 
+<com.threefiftynice.android.preference.ListPreferenceMultiSelect android:title="Notification Types" android:defaultValue="0" android:entries="@array/notifyChoices" android:summary="Choose what to be notified for" android:key="notifyWhat" android:entryValues="@array/notifyValues" android:dependency="notifyEnabled"> 
 </com.threefiftynice.android.preference.ListPreferenceMultiSelect>
 
 

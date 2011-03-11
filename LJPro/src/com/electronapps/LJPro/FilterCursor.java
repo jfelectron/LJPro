@@ -19,8 +19,8 @@ public class FilterCursor extends CursorWrapper {
 		mCursor=cursor;
 		
 		mResources=c.getResources();
-		String [] noSyn={mResources.getString(R.string.allfriends),mResources.getString(R.string.jonly),mResources.getString(R.string.conly)};
-		String [] Syn={mResources.getString(R.string.allfriends),mResources.getString(R.string.jonly),mResources.getString(R.string.conly),mResources.getString(R.string.sonly)};
+		String [] noSyn={mResources.getString(R.string.allfriends),mResources.getString(R.string.starred),mResources.getString(R.string.jonly),mResources.getString(R.string.conly)};
+		String [] Syn={mResources.getString(R.string.allfriends),mResources.getString(R.string.starred),mResources.getString(R.string.jonly),mResources.getString(R.string.conly),mResources.getString(R.string.sonly)};
 		
 		if (havesyn) mExtras=Syn;
 		else mExtras=noSyn;

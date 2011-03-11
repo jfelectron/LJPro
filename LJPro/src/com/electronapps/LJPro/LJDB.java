@@ -828,8 +828,9 @@ public class LJDB
 			if (fp.getCount()>maxCount) {
 				fp.moveToPosition(maxCount+1);
 				maxTime=fp.getInt(0);
-				Object[] delArgs={args[0],maxTime};
-				db.execSQL("DELETE FROM friendspage WHERE accountname=? AND logtime<?;",delArgs);
+				Object[] delArgs={args[0],maxTime,1};
+				//delete entries older than the older we want to keep except for starred entries
+				db.execSQL("DELETE FROM friendspage WHERE accountname=? AND logtime<? AND starred!=?;",delArgs);
 				
 			}
 			fp.close();
@@ -838,6 +839,21 @@ public class LJDB
 		catch (Throwable t) {
 			Log.e(TAG,t.getMessage(),t);
 		}
+		return success;
+	}
+	
+	public boolean updateStarred(String accountname,Integer ditemid,String journal,Boolean starred){
+		boolean success=false;
+		ContentValues values=new ContentValues();
+		values.put(KEY_STARRED, starred?1:0);
+		String[] args={accountname,ditemid.toString(),journal};
+		try{
+			success=db.update(FRIENDSPAGE_TABLE, values,KEY_ACCOUNTNAME+"=? AND "+KEY_ITEMID+"=? AND "+KEY_JOURNALNAME+"=?", args)>0;
+		}
+		catch(Throwable e){
+			Log.e(TAG,e.getMessage(),e);
+		}
+		
 		return success;
 	}
 	

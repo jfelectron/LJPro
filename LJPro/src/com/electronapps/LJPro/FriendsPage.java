@@ -1,29 +1,20 @@
 package com.electronapps.LJPro;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.ref.SoftReference;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
-import com.commonsware.cwac.cache.AsyncCache;
+
 import com.commonsware.cwac.cache.SimpleWebImageCache;
 import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
 import com.commonsware.cwac.thumbnail.ThumbnailBus;
 import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-import com.electronapps.LJPro.LJTypes.Friend;
-import com.electronapps.LJPro.LJTypes.Post;
+
 
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
@@ -35,16 +26,16 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Debug;
 import android.preference.PreferenceManager;
-import android.text.Editable;
+
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.LayoutInflater.Filter;
+
 import android.widget.AdapterView;
-import android.widget.ImageView;
+
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -320,6 +311,18 @@ public class FriendsPage extends ListActivity {
 		mPosition=resultCode;
 		
 		
+	}
+	
+	public void  toggleStarred(int which, Boolean starred){
+		mCursor.moveToPosition(which);
+		try {
+		String journal=mCursor.getString(mCursor.getColumnIndexOrThrow(LJDB.KEY_JOURNALNAME));
+		Integer ditemid=mCursor.getInt(mCursor.getColumnIndexOrThrow(LJDB.KEY_ITEMID));
+		boolean success=LJDBAdapter.updateStarred(journalname, ditemid, journal, starred);
+		}
+		catch(IllegalArgumentException e) {
+			Log.e(TAG,e.getMessage(),e);
+		}
 	}
 	
 	

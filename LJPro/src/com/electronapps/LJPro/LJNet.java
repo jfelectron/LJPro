@@ -900,6 +900,7 @@ public class LJNet extends WakefulIntentService {
 				HashMap<String,Object> entry=(HashMap<String,Object>) entries[i];
 				try {
 				post.put("_id", UUID.randomUUID().getMostSignificantBits());
+				post.put("starred",0);
 				post.put("accountname",ljUser.journalname);
 				post.put("ditemid",Integer.parseInt(entry.get("ditemid").toString()));
 				post.put("event_raw",getStringOrUTF(entry,"event_raw"));//.replaceAll("\n","<br><br\\>"));

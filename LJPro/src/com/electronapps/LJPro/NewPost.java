@@ -36,6 +36,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -1001,7 +1002,7 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		};
 
 	
-		
+
 		@Override
 		protected void onActivityResult (int requestCode, int resultCode, Intent data) {
 			if (resultCode==RESULT_OK) {
@@ -1033,22 +1034,29 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 				case TAKE_PHOTO:
 					break;
 				case UPLOAD_PHOTO:
+					
 					String provider=data.getStringExtra("provider");
 					String file=data.getStringExtra("file");
 					String title=data.getStringExtra("title");
+					int size=data.getIntExtra("size",0);
+					
 					createProgressNotify(file,title,provider);
-					insertImage(data);
+					insertImage(provider,file,title,size);
 					
 					break;
 			}
 			}
 		}
 		
+	
+		
+		
+
 		HashMap<String,Notification> notifyMap=new HashMap<String,Notification>();
 		HashMap<String,Integer> notifyIdMap=new HashMap<String,Integer> ();
-		private void insertImage(Intent data) {
-			String filepath=data.getStringExtra("file");
-			int progress=data.getIntExtra("size",0);
+		
+		private void insertImage(String provider, String filepath, String title,int progress) {
+			
 			int dSize=0;
 			if (progress<(100/6))  dSize=75;
 			else if (progress>=100/6&&progress<200/6)  dSize=100;
@@ -1057,7 +1065,7 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 			else if (progress>=400/6&&progress<500/6)  dSize=1024;
 			else if (progress>=500/6&&progress<600/6)  dSize=-1;
 			
-			mPost.insertImageStub(filepath, dSize);
+			mPost.insertImageStub(provider, filepath, title, dSize);
 			
 		}
 		private int UPLOAD_NOTIFY=1;

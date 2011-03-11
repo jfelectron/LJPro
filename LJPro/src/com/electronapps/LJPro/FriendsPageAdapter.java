@@ -1,6 +1,7 @@
 package com.electronapps.LJPro;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
+import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
@@ -29,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 
 public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProvider{
@@ -98,6 +101,7 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
 		 ALL_J=mActivity.getString(R.string.jonly);
 		 ALL_C=mActivity.getString(R.string.conly);
 		 ALL_S=mActivity.getString(R.string.sonly);
+		 STARRED=mActivity.getString(R.string.starred);
 		 mConstraint=ALL_FRIENDS;
 		
 	}
@@ -134,7 +138,7 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
 
 
 
-	private static final Pattern entityPattern = Pattern.compile("(&[a-z]*;)");
+	HashMap<Integer,Boolean> starMap=new HashMap<Integer,Boolean>();
 
 
 	@Override
@@ -149,8 +153,10 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
         else {
         	holder.postername.setText("");
         }
-        holder.starred.setTag(c.getPosition());
-        holder.starred.setChecked(c.getInt(starInd)==0?false:true);
+        int pos=c.getPosition();
+        holder.starred.setTag(pos);
+        boolean checked=starMap.get(pos)==null?(c.getInt(starInd)==0?false:true):starMap.get(pos);
+        holder.starred.setChecked(checked);
         holder.subject.setText(c.getString(subjInd)==null?"":c.getString(subjInd));
         holder.date.setText(c.getString(dateInd));
         holder.snippet.setText(c.getString(snipInd)==null?"": c.getString(snipInd));
@@ -164,7 +170,16 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
         else holder.userpic.setTag(null);
        
 	}
-
+	 final OnCheckedChangeListener onStarChanged=new OnCheckedChangeListener(){
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			Integer position=(Integer) buttonView.getTag();
+			starMap.put(position, isChecked);
+			mActivity.toggleStarred(position, isChecked);
+			
+		}
+		
+	};
 
 
 	@Override
@@ -172,6 +187,7 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
 		 View v = mInflater.inflate(layoutResource, null);
          ViewHolder holder = new ViewHolder();
          holder.starred=(ToggleButton) v.findViewById(R.id.starred);
+         holder.starred.setOnCheckedChangeListener(onStarChanged);
          holder.userpic = (ImageView) v.findViewById(R.id.duserpic);
          holder.journalname = (TextView) v.findViewById(R.id.uname);
          holder.postername=(TextView) v.findViewById(R.id.postername);
@@ -189,7 +205,7 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
 	public static String ALL_FRIENDS;
 	public static String ALL_J;
 	public static String ALL_C;
-	public static String STARED="starred";
+	public static String STARRED;
 	public static String ALL_S;
 	
 	
@@ -218,7 +234,7 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
 				}
 				
 			}
-			else if(constraint.equals(STARED)) {
+			else if(constraint.equals(STARRED)) {
 				extraWhere="AND "+LJDB.KEY_STARRED+"=?";
 				String[] extraArgs={"1"};
 				args=extraArgs;
@@ -250,7 +266,12 @@ public class FriendsPageAdapter extends CursorAdapter implements FilterQueryProv
 			
 		}
 	}
-		
+	
+	@Override
+		public void changeCursor(Cursor c) {
+		super.changeCursor(c);
+		starMap.clear();
+	}
 	
 
     

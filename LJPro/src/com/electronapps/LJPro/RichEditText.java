@@ -895,7 +895,7 @@ private int mDesiredSize=-1;
 	
 	HashMap<String,HTMLImageSpan> imageStubs=new HashMap<String,HTMLImageSpan>();
 	
-	public void insertImageStub(String filepath, int desiredSize) {
+	public void insertImageStub(String provider,String filepath, String title, int desiredSize) {
 		BitmapFactory.Options ops=new BitmapFactory.Options();
 		ops.inTempStorage = new byte[32*1024];
 		Bitmap bitmap=BitmapFactory.decodeFile(filepath,ops);
@@ -932,6 +932,9 @@ private int mDesiredSize=-1;
 				if (start != -1 && end != -1) {
 					
 					HTMLImageSpan span = new HTMLImageSpan(scaled,null,displayWidth,displayHeight);
+					span.setTitle(title);
+					span.setProvider(provider);
+					span.setUploaded(false);
 					imageStubs.put(filepath,span);
 					editableText.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}	
@@ -954,7 +957,7 @@ private int mDesiredSize=-1;
 				text.setSpan(new URLSpan(link), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			span.setSrc(srcUrl);
-			span.setTitle(title);
+			span.setUploaded(true);
 		}
 		imageStubs.remove(filepath);
 	}

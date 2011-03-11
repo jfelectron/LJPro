@@ -74,7 +74,7 @@ public class Html {
      */
     public static interface ImageGetter {
         /**
-         * This methos is called when the HTML parser encounters an
+         * This method is called when the HTML parser encounters an
          * &lt;img&gt; tag.  The <code>source</code> argument is the
          * string from the "src" attribute; the return value should be
          * a Drawable representation of the image or <code>null</code>
@@ -198,17 +198,28 @@ public class Html {
             int start, int end) {
         int next;
         for (int i = start; i < end; i = next) {
-            next = text.nextSpanTransition(i, end, BlockQuoteSpan.class);
-            BlockQuoteSpan[] quotes = text.getSpans(i, next, BlockQuoteSpan.class);
+            next = text.nextSpanTransition(i, end, BlockSpan.class);
+            BlockSpan[] blocks = text.getSpans(i, next, BlockSpan.class);
 
-            for (BlockQuoteSpan quote: quotes) {
-                out.append("<blockquote>");
-            }
+            for (BlockSpan block: blocks) {
+            	if (block instanceof BlockQuoteSpan) out.append("<blockquote>");
+            	else if(block instanceof LJCutSpan) {
+            		
+                    	LJCutSpan ljcut=(LJCutSpan) block;
+                    	String linktext=ljcut.getCutText();
+                    	if(linktext==null) {
+                    		linktext="Read More";
+                    	}
+                    	out.append(String.format("<lj-cut text=?>",linktext));
+                    }
+            	}
+            
 
             withinBlockquote(out, text, i, next);
 
-            for (BlockQuoteSpan quote: quotes) {
-                out.append("</blockquote>\n");
+            for (BlockSpan block: blocks) {
+            	if (block instanceof BlockQuoteSpan) out.append("</blockquote>\n");
+            	else if(block instanceof LJCutSpan) out.append("</lj-cut>\n");
             }
         }
     }
@@ -283,6 +294,10 @@ public class Html {
                 }
                 if (style[j] instanceof HTMLImageSpan) {
                     out.append("<img src=\"");
+                    if (((HTMLImageSpan)style[j]).getTitle()!=null) {
+                    	 out.append(((HTMLImageSpan) style[j]).getTitle());
+                         out.append("\" title=");
+                    }
                     out.append(((HTMLImageSpan) style[j]).getSource());
                     out.append("\" height=");
                     out.append(((HTMLImageSpan) style[j]).getHeight());
@@ -293,6 +308,10 @@ public class Html {
                     // Don't output the dummy character underlying the image.
                     i = next;
                 }
+                
+                
+              
+            
                 if (style[j] instanceof AbsoluteSizeSpan) {
                     out.append("<span style=\"text-size: ");
                     out.append(((AbsoluteSizeSpan) style[j]).getSize());

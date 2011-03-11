@@ -11,6 +11,8 @@ import android.os.Parcel;
 import android.text.DynamicLayout;
 import android.text.Layout;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.CharacterStyle;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.ReplacementSpan;
 
@@ -124,6 +126,7 @@ public class BlockSpan {
 		
 		
 	}
+
 
 	
 

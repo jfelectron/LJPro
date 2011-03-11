@@ -17,6 +17,8 @@ public class HTMLImageSpan extends ImageSpan {
 	private Bitmap mBitmap;
 	private String mSrc;
 	private String mTitle;
+	private String mProvider;
+	private boolean mUploaded;
 
 	public HTMLImageSpan(Bitmap b,String src,int width, int height,int dSize) {
 		super(b);
@@ -110,6 +112,16 @@ public class HTMLImageSpan extends ImageSpan {
 	
 	public String getTitle() {
 		return mTitle;
+	}
+
+	public void setProvider(String provider) {
+		mProvider=provider;
+		
+	}
+
+	public void setUploaded(boolean b) {
+		mUploaded=b;
+		
 	}
 
 }
