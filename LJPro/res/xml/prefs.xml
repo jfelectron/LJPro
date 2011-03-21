@@ -8,8 +8,7 @@
 			android:title="Default Account"
 			android:summary="Default account to auto login" android:dependency="autoLogin" android:enabled="true"></ListPreference>
 	</PreferenceCategory>
-	<CheckBoxPreference android:key="acra.disable"
-        android:title="Error Reporting" android:defaultValue="false" android:summaryOff="Error Reporting Enabled" android:summaryOn="Error Reporting Disabled"/>
+	<PreferenceCategory android:title="Error Reporting"><CheckBoxPreference android:key="acra.disable" android:defaultValue="false" android:summaryOff="Error Reporting Enabled" android:summaryOn="Error Reporting Disabled" android:title="Anonymous Error Reporting"/></PreferenceCategory>
 	<PreferenceCategory android:title="Settings Scope"><ListPreference android:key="settingScope" android:title="Choose Account" android:summary="Apply below settings to all accunts or a specific account"></ListPreference>
 </PreferenceCategory><PreferenceCategory android:title="Location and Security"><ListPreference android:defaultValue="1" android:key="securityPref" android:entries="@array/photoValues" android:title="Default Post Security" android:entryValues="@array/securityValues"></ListPreference><CheckBoxPreference android:defaultValue="false" android:summaryOn="Use Location By Default" android:summaryOff="Don't Use Location By Default" android:key="useLocation" android:title="Location for Posts"></CheckBoxPreference>
 </PreferenceCategory>
@@ -18,7 +17,7 @@
 	<PreferenceCategory android:title="Background Sync and Notifications">
 		<CheckBoxPreference android:key="backgroundSync"
 			android:defaultValue="false" android:enabled="true" android:title="Background Sync"
-			android:summaryOn="Background Sync Enabled" android:summaryOff="Background Sync Disabled" android:disableDependentsState="true"></CheckBoxPreference>
+			android:summaryOn="Background Sync Enabled" android:summaryOff="Background Sync Disabled" android:disableDependentsState="false"></CheckBoxPreference>
 		<ListPreference android:key="syncFrequency"
 			android:title="Sync Frequency" android:defaultValue="900000" android:entries="@array/syncChoices"
 			android:entryValues="@array/syncValues" android:dependency="backgroundSync" android:summary="How often to sync"></ListPreference>
@@ -49,6 +48,7 @@
 </PreferenceCategory>
 <PreferenceCategory android:title="Photo Uploading"><ListPreference android:key="photoProvider" android:title="Default Photo Repository" android:enabled="true" android:entries="@array/photoProviders" android:entryValues="@array/photoValues"></ListPreference>
 </PreferenceCategory>
+
 
 
 

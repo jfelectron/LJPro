@@ -296,12 +296,12 @@ public class Html {
                     out.append("<img src=\"");
                     if (((HTMLImageSpan)style[j]).getTitle()!=null) {
                     	 out.append(((HTMLImageSpan) style[j]).getTitle());
-                         out.append("\" title=");
+                         out.append("\" title=\"");
                     }
                     out.append(((HTMLImageSpan) style[j]).getSource());
-                    out.append("\" height=");
+                    out.append("\" height=\"");
                     out.append(((HTMLImageSpan) style[j]).getHeight());
-                    out.append("\" width=");
+                    out.append("\" width=\"");
                     out.append(((HTMLImageSpan) style[j]).getWidth());
                     out.append("\">");
 

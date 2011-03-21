@@ -1168,6 +1168,10 @@ public class HorizontalSnapView extends HorizontalScrollView {
         static final int NO_POSITION = -1;
         
        
+        public void setSelection(int selection){
+        	 mSelectedPosition = selection;
+        	 requestLayout();
+        }
         
         void setSelectedPositionInt(int position) {
         	

@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -135,9 +136,8 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 
 	private SharedPreferences appPrefs;
 
-	private Bitmap mImagePlaceholder;
-
-	private float mScale;
+	
+	long mRowId=-1;
 
 	private PhotoUploadReceiver mPhotoReceiver;
 	  final static int[] to = new int[] { android.R.id.text1 };
@@ -168,6 +168,24 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		mPost=(RichEditText) findViewById(R.id.postbody);
 		mTags=(MultiAutoCompleteTextView) findViewById(R.id.tags);
 		mSecurity=(Spinner) findViewById(R.id.security);
+		Button addpost=(Button) findViewById(R.id.addpost);
+		Button drafts=(Button) findViewById(R.id.drafts);
+		addpost.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				addPost();
+				
+			}
+			
+		});
+		drafts.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				loadDrafts();
+				
+			}
+			
+		});
 		mUseJournal=(Spinner) findViewById(R.id.usejournals);
 		mUseLoc=(CheckBox) findViewById(R.id.useloc);
 		mUseLoc.setOnCheckedChangeListener(useLoc);
@@ -186,9 +204,7 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		Panel p2=(Panel) findViewById(R.id.panel2);
 		RelativeLayout ops=(RelativeLayout) findViewById(R.id.newpost);
 		p1.registerSiblings(new int[]{R.id.panel2});
-		//p1.setParent(ops);
 		p2.registerSiblings(new int[]{R.id.panel1});
-		//p2.setParent(ops);
 		mUserpics=(CoverFlow) findViewById(R.id.userpics);
 		mSubject=(EditText) findViewById(R.id.postsubject);
 		IME=(InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -238,6 +254,8 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		}
 		
 	};
+
+	private Cursor mUpicCursor;
 	
 	private void setupMiscSpinners() {
 		 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -316,10 +334,10 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 
 
 	private void setupUserpics() {
-		String[] columns={"_id",LJDB.KEY_URL};
+		String[] columns={"_id",LJDB.KEY_URL,LJDB.KEY_NAME};
 		int[] to={R.id.userpic};
-		Cursor userpics=mDB.getUserPics(mJournalname,columns);
-		UserpicAdapter upics=new UserpicAdapter(this,userpics,R.layout.userpicchooser);
+		mUpicCursor=mDB.getUserPics(mJournalname,columns);
+		UserpicAdapter upics=new UserpicAdapter(this,mUpicCursor,R.layout.userpicchooser);
 		mUserpics.setAdapter(new ThumbnailAdapter(this, upics, imgCache, to));
 		mUserpics.setSpacing(-25);
 		mUserpics.setAnimationDuration(1000);
@@ -1121,13 +1139,139 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		        else return null;
 		    }
 		
-
-	private void addPost() {
+	BigInteger allowMask;
+	public void addPost() {
+		Toast.makeText(this,"Posting to LiveJournal",Toast.LENGTH_LONG);
+		PreparePost send=new PreparePost();
+		send.execute();
+	
 		
 	}
 	
-	private void loadDrafts() {
+	public void loadDrafts() {
 		
+	}
+	
+	private ContentValues collectPostData(){
+		ContentValues postOptions=new ContentValues();
+
+		int picIndex=mUserpics.getSelectedItemPosition();
+		mUpicCursor.moveToPosition(picIndex);
+		String userpic=mUpicCursor.getString(mUpicCursor.getColumnIndexOrThrow(LJDB.KEY_NAME));
+		postOptions.put("picture_keyword",userpic);
+		int uj=mUseJournal.getSelectedItemPosition();
+		mJournals.moveToPosition(uj);
+		String usejournal=mJournals.getString(mJournals.getColumnIndexOrThrow(LJDB.KEY_JOURNALNAME));
+		postOptions.put("usejournal",usejournal);
+		int i=mSecurity.getSelectedItemPosition();
+		switch(i) {
+		case 0:
+			postOptions.put("security","public");
+			break;
+		case 1:
+			postOptions.put("security","usemask");
+			postOptions.put("allowmask",1);
+			break;
+		case 2:
+			postOptions.put("security","private");
+			break;
+		case 4:
+			postOptions.put("security","usemask");
+			postOptions.put("allowmask",allowMask.intValue());
+		}
+		i=mAdultContent.getSelectedItemPosition();
+		switch(i) {
+
+		case 0:
+			break;
+		case 1:
+			postOptions.put("adult_content","none");
+			break;
+		case 2:
+			postOptions.put("adult_content","concepts");
+			break;
+		case 3:
+			postOptions.put("adult_content","explicit");
+			break;
+		}
+		i=mAllowComments.getSelectedItemPosition();
+
+
+		switch(i){
+		case 0:
+			break;
+		case 1:
+			postOptions.put("opt_nocomments",true);
+			break;
+		case 2:
+			postOptions.put("opt_noemail",true);
+			break;
+		}
+		i=mScreenComments.getSelectedItemPosition();
+		switch(i){
+		case 0:
+			break;
+		case 1:
+			postOptions.put("opt_screening","N");
+			break;
+		case 2:
+			postOptions.put("opt_screening","R");
+			break;
+		case 3:
+			postOptions.put("opt_screening","F");
+			break;
+		case 4:
+			postOptions.put("opt_screening","L");
+			break;
+		case 5:
+			postOptions.put("opt_screening","A");
+			break;
+		}
+		String tags=mTags.getText().toString();
+		String mood=mMood.getText().toString();
+		if (tags.length()!=0) {
+			postOptions.put("taglist",tags);
+		}
+		if (mood.length()!=0){
+			postOptions.put("current_mood",mood);
+		}
+		postOptions.put("uselocation",mUseLoc.isChecked());
+		String location=mLocation.getText().toString();
+		if (location.length()!=0){
+			postOptions.put("current_location",location);
+		}
+
+
+		String postHTML=Html.toHtml(mPost.getEditableText());
+		String subject=mSubject.getText().toString();
+		postOptions.put("event", postHTML);
+		postOptions.put("subject", subject);
+		return postOptions;
+	}
+
+	
+	
+	private class PreparePost extends AsyncTask<Integer,Void, Intent> {
+
+		
+		
+		@Override
+		protected Intent doInBackground(Integer... params) {
+			
+			ContentValues postOptions=collectPostData();
+
+			Intent newpost=new Intent(LJNet.LJ_POSTEVENT);
+			newpost.putExtra("post",postOptions);
+			newpost.putExtra("journalname", mJournalname);
+			return newpost;
+		}
+		
+		@Override
+		protected void onPostExecute(Intent newpost) {
+			
+			WakefulIntentService.sendWakefulWork(getApplicationContext(),newpost);
+			finish();
+		}
 	}
 		
 
@@ -1194,6 +1338,13 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 	@Override
 		protected void onPause() {
 		super.onPause();
+		ContentValues postData=collectPostData();
+		if (mRowId==-1){
+			mDB.createNewDraft(postData);
+		}
+		else {
+			
+		}
 		if(mUseLoc.isChecked()){
 			mFindMe.cancel();
 		}

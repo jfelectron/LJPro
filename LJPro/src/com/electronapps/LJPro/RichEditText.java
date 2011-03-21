@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -26,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.BitmapFactory.Options;
+import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -337,8 +339,8 @@ public class RichEditText extends EditText {
 	private void setOrRemoveStyle(){
 		final int style=mNewStyle==null?-1:mNewStyle;
 		int selectionStart =getSelectionStart();
-		Class type=null;
-		Object what=null;
+		//Class type=null;
+		//Object what=null;
 		boolean adding=isStyleSet(style);
 		
 		SpanInfo si;
@@ -493,7 +495,10 @@ public class RichEditText extends EditText {
                         		s.setSpan(what,position,si.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         	}
                         	else if (position==si.end) {
-                        		deleted=true;
+                        		//int flags=s.getSpanFlags(ss[i]);
+                        		if ((s.getSpanFlags(ss[i])&Spanned.SPAN_COMPOSING)==0) {
+                        			deleted=true;
+                        		}
                         	
                         		
                         	}
@@ -502,6 +507,7 @@ public class RichEditText extends EditText {
                     	 }  
                      }
                      if (deleted) {
+                    	 
                     	 onSelectionChanged(position,position);
                     	 return;
                      }
@@ -707,7 +713,7 @@ public class RichEditText extends EditText {
 				Boolean withinImageSpan=false;
 				for (int i=0;i<ss.length;i++) {
 					SpanInfo si=SpanInfo.getSpanInfo(ss[i],mEditable);
-					if (si!=null) {
+					if (si!=null&&(mEditable.getSpanFlags(ss[i])&Spanned.SPAN_COMPOSING)==0) {
 					if (si.id==RichEditText.IMAGE_SPAN) withinImageSpan=true;
 						
 						mCurrentStyles.put(si.id,true);
@@ -898,6 +904,25 @@ private int mDesiredSize=-1;
 	public void insertImageStub(String provider,String filepath, String title, int desiredSize) {
 		BitmapFactory.Options ops=new BitmapFactory.Options();
 		ops.inTempStorage = new byte[32*1024];
+		Matrix matrix = new Matrix();
+		try {
+			ExifInterface exif = new ExifInterface(filepath);
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+			switch(orientation){
+			case 3:
+				matrix.postRotate(180);
+				break;
+			case 6:
+				matrix.postRotate(90);
+				break;
+			case 8:
+				matrix.postRotate(-90);
+				break;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Bitmap bitmap=BitmapFactory.decodeFile(filepath,ops);
 		if(bitmap!=null) {
 			int width=bitmap.getWidth();
@@ -906,20 +931,20 @@ private int mDesiredSize=-1;
 			int displayHeight,displayWidth;
 			
 			if (width>height) {
-			displayWidth=desiredSize==-1?width:desiredSize;
+			displayWidth=desiredSize==-1||desiredSize>width?width:desiredSize;
 			 scale = ((float) IMAGE_THUMB*mScale)/width;
 			float dratio=((float) bitmap.getWidth()) / displayWidth;
 			displayHeight=(int) (height / dratio);
 			}
 			else {
-				displayHeight=desiredSize==-1?height:desiredSize;
+				displayHeight=desiredSize==-1||desiredSize>height?height:desiredSize;
 				 scale = ((float) IMAGE_THUMB*mScale)/height;
 				float dratio=((float) height / displayHeight);
 				displayWidth=(int) (width/ dratio);
 				
 			}
 
-			Matrix matrix = new Matrix();
+			
 			matrix.postScale(scale, scale);
 
 			Bitmap scaled = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
@@ -957,6 +982,7 @@ private int mDesiredSize=-1;
 				text.setSpan(new URLSpan(link), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			span.setSrc(srcUrl);
+			span.setTitle(title);
 			span.setUploaded(true);
 		}
 		imageStubs.remove(filepath);

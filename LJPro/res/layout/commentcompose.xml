@@ -37,7 +37,7 @@
 				android:singleLine="true" android:textSize="18dp" android:hint="Subject" />
 			<com.electronapps.LJPro.RichEditText
 				android:id="@+id/commentbody" android:hint="Comment"
-				android:textSize="18dp" android:layout_below="@+id/commentsubject"
+				android:textSize="18dp"  android:gravity="top" android:layout_below="@+id/commentsubject"
 				android:layout_height="wrap_content" android:minLines="5"
 				android:inputType="textAutoCorrect|textLongMessage|textCapSentences|textMultiLine"
 				android:layout_width="fill_parent" />

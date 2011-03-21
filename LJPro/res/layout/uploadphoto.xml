@@ -14,7 +14,7 @@
 
 	<EditText android:id="@+id/phototitle" android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="Title (optional)"></EditText>
     <TextView android:layout_marginTop="10dp"  android:textStyle="bold" android:layout_width="fill_parent" android:textColor="#FFFFFF" android:layout_height="wrap_content" android:gravity="center" android:textSize="20dp" android:text="Post Display Size" ></TextView>
-  	<TextView android:id="@+id/photoSize" android:layout_width="fill_parent" android:textColor="#FFFFFF" android:layout_height="wrap_content" android:gravity="center" android:textSize="20dp" android:text="75 pixels" ></TextView>
+  	<TextView android:id="@+id/photoSize" android:layout_width="fill_parent" android:textColor="#FFFFFF" android:layout_height="wrap_content" android:gravity="center" android:textSize="20dp" android:text="Square Thumbnail" ></TextView>
   	<SeekBar android:id="@+id/sizeSeek" android:layout_marginBottom="5dp" android:layout_width="fill_parent" android:enabled="false" android:layout_height="wrap_content"  ></SeekBar>
  <ListView android:layout_width="fill_parent"  android:layout_weight="1" android:layout_height="fill_parent" android:id="@android:id/list"/>
 </LinearLayout>

@@ -20,7 +20,7 @@ import android.widget.TextView;
 			    setContentView(R.layout.navigation);
 			    Intent intent=getIntent();
 			    journalname=intent.getStringExtra("journalname");
-			    TextView header=(TextView) findViewById(R.id.journal_name);
+			    TextView header=(TextView) findViewById(R.id.username);
 			    header.setText(journalname);
 			    ImageButton friendspage=(ImageButton) findViewById(R.id.friends_button);
 			    friendspage.setOnClickListener(new OnClickListener(){

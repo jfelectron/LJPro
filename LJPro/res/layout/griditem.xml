@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="100dp"
+  android:layout_height="135dp"
+  android:orientation="vertical">
+  	 <TextView 
+  	  android:background="@drawable/commentdiv"
+      android:textSize="12dp"
+      android:textStyle="bold"
+      android:gravity="center"
+      android:text="postsecret"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"
+      android:layout_width="fill_parent"
+      android:id="@+id/journalname"
+      android:layout_margin="2dp"></TextView>
+ 
+ 
+<LinearLayout  android:background="@drawable/snippet" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	  <TextView 
+      android:textSize="12dp"
+      android:textStyle="bold"
+      android:layout_height="30dp"
+      android:maxLines="2"
+      android:textColor="#FFF6D5"
+      android:layout_width="fill_parent"
+      android:id="@+id/subject" android:layout_marginBottom="2dp"></TextView>
+	<ImageView  android:id="@+id/imgpreview"  android:layout_width="fill_parent" android:layout_height="50dp" android:src="@drawable/gridtest" android:scaleType="center"></ImageView>
+ 	 
+ 	 <TextView 
+      android:textSize="12dp"
+      android:textStyle="bold"
+      android:layout_height="wrap_content"
+      android:singleLine="true"
+      android:textColor="#ACEBF2"
+      android:layout_width="fill_parent"
+      android:id="@+id/postername" android:layout_marginBottom="2dp"></TextView>
+ 	
+ 	
+  
+ 
+      </LinearLayout>
+  
+</LinearLayout>

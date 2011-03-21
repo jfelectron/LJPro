@@ -16,7 +16,6 @@ import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,7 +36,6 @@ import android.view.View;
 
 import android.widget.AdapterView;
 
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -47,18 +45,18 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class FriendsPage extends Activity {
+public class FriendsPageList extends ListActivity {
 
 	private Cursor mCursor;
 	private LJDB LJDBAdapter;
 	private SharedPreferences appPrefs;
-	private FPGridAdapter m_adapter;
+	private FriendsPageAdapter m_adapter;
 	private static Context mContext;
 	boolean refreshing = false;
 	boolean adddel=false;
 	private static boolean TRACE=true;
 	private SharedPreferences.Editor editor;
-	private GridView mGrid;
+	
 
 	private HashMap<String,String[]> groupsHash;
 	private String journalname = "";
@@ -66,6 +64,7 @@ public class FriendsPage extends Activity {
 
 	public static final String TAG = Accounts.class.getSimpleName();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,14 +79,14 @@ public class FriendsPage extends Activity {
 		journalname = intent.getStringExtra("journalname");
 		mContext = getApplicationContext();
 		
-		setContentView(R.layout.friendspage_grid);
-		mGrid=(GridView) findViewById(R.id.postgrid);
+		setContentView(R.layout.friendspage);
+		
 		
 		appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		imgCache = ((LJPro) mContext).getImageCache();
 		mCurrentFilter=getString(R.string.allfriends);
 		populateFriendsPage();
-		registerForContextMenu(mGrid);
+		registerForContextMenu(getListView());
 		
 
 	}
@@ -185,7 +184,7 @@ public class FriendsPage extends Activity {
 					Cursor filtered=m_adapter.runQueryOnBackgroundThread(filter);
 					if(!filtered.equals(mCursor)) {
 						m_adapter.changeCursor(filtered);
-						//FriendsPage.this.getListView().setSelection(0);
+						FriendsPageList.this.getListView().setSelection(0);
 						mCursor.close();
 						mCursor=filtered;
 				}
@@ -215,7 +214,7 @@ public class FriendsPage extends Activity {
 		
 		runOnUiThread(new Runnable() {public void run(){
 			
-			SimpleCursorAdapter adapter2 = new SimpleCursorAdapter(FriendsPage.this,R.layout.simple_spinner_item,mSpinnerCursor,new String[] {LJDB.KEY_NAME}, new int[] {android.R.id.text1});  // Give the cursor to the list adapter
+			SimpleCursorAdapter adapter2 = new SimpleCursorAdapter(FriendsPageList.this,R.layout.simple_spinner_item,mSpinnerCursor,new String[] {LJDB.KEY_NAME}, new int[] {android.R.id.text1});  // Give the cursor to the list adapter
 			
 				adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			s.setAdapter(adapter2);}} );
@@ -268,7 +267,8 @@ public class FriendsPage extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("groupsHash", groupsHash);
-		outState.putInt("position",mGrid.getSelectedItemPosition());
+	
+		outState.putInt("position",getSelectedItemPosition());
 		
 	}
 
@@ -285,8 +285,8 @@ public class FriendsPage extends Activity {
 				"FriendsPage Background");
 
 		thread.start();
-		
-		mGrid.setOnItemClickListener(new OnItemClickListener() {
+		ListView listView = getListView();
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long arg3) {
@@ -304,7 +304,7 @@ public class FriendsPage extends Activity {
 	
 	@Override 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		mGrid.setSelection(resultCode);
+		setSelection(resultCode);
 		mPosition=resultCode;
 		
 		
@@ -339,9 +339,9 @@ public class FriendsPage extends Activity {
 		
 		
 		runOnUiThread(new Runnable(){ public void run() {
-		final int[] IMAGE_IDS = { R.id.imgpreview };
-		m_adapter = new FPGridAdapter(FriendsPage.this,journalname, mCursor, R.layout.griditem);
-		mGrid.setAdapter(new ThumbnailAdapter(FriendsPage.this, m_adapter, imgCache,
+		final int[] IMAGE_IDS = { R.id.duserpic };
+		m_adapter = new FriendsPageAdapter(FriendsPageList.this,journalname, mCursor, R.layout.postrow);
+		setListAdapter(new ThumbnailAdapter(FriendsPageList.this, m_adapter, imgCache,
 				IMAGE_IDS));
 		}
 		});
@@ -370,7 +370,7 @@ public class FriendsPage extends Activity {
 				removeStickyBroadcast(intent);
 				
 					LJPro app=(LJPro) getApplication();
-					app.alertNetworkError(FriendsPage.this);
+					app.alertNetworkError(FriendsPageList.this);
 					refreshing = false;
 					View updating = findViewById(R.id.updatingfriends);
 					updating.setVisibility(View.GONE);
@@ -410,7 +410,7 @@ public class FriendsPage extends Activity {
 			if (action.equals(LJNet.LJ_FRIENDADDED)) {
 				removeStickyBroadcast(intent);
 				if (adddel) {
-				Toast.makeText(FriendsPage.this, "Friend Added", Toast.LENGTH_SHORT);
+				Toast.makeText(FriendsPageList.this, "Friend Added", Toast.LENGTH_SHORT);
 				Intent updatefriends = new Intent(LJNet.LJ_GETFRIENDS);
 				updatefriends.putExtra("journalname", journalname);
 				WakefulIntentService.sendWakefulWork(mContext, updatefriends);
@@ -426,7 +426,7 @@ public class FriendsPage extends Activity {
 			if (action.equals(LJNet.LJ_FRIENDDELETED)) {
 				removeStickyBroadcast(intent);
 				if (adddel) {
-					Toast.makeText(FriendsPage.this, "Friend Added", Toast.LENGTH_SHORT);
+					Toast.makeText(FriendsPageList.this, "Friend Added", Toast.LENGTH_SHORT);
 					Intent updatefriends = new Intent(LJNet.LJ_GETFRIENDS);
 					updatefriends.putExtra("journalname", journalname);
 					WakefulIntentService.sendWakefulWork(mContext, updatefriends);
@@ -564,7 +564,7 @@ public class FriendsPage extends Activity {
 		super.onResume();
 		spinnerLoaded=false;
 		if (mCursor!=null) mCursor.requery();
-		mGrid.setSelection(mPosition);
+		setSelection(mPosition);
 		IntentFilter friendfilter = new IntentFilter();
 		friendfilter.setPriority(1);
 	  	friendfilter.addAction(LJNet.LJ_XMLERROR);

@@ -2,6 +2,7 @@ package com.electronapps.LJPro;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -45,9 +46,10 @@ public class LJDB
 	private static final String USEJOURNALS_TABLE="usejournals";
 	private static final String TAGS_TABLE="tags";
 	private static final String COMMENTS_TABLE="comments";
-	
-	
-	
+	private static final String DRAFTS_TABLE="drafts";
+
+
+
 
 	private static final int DATABASE_VERSION = 1;
 
@@ -65,7 +67,7 @@ public class LJDB
 		+"ljloggedin text,"
 		+"expiration integer,"
 		+"defaultuserpic text);";
-	
+
 	private static final String PHOTOACCOUNTS_CREATE =
 		"create table if not exists photo_accounts ( "
 		+ "_id INTEGER , "
@@ -75,16 +77,16 @@ public class LJDB
 		+"accountname text not null," 
 		+"auth_secret text,"
 		+"auth_token text,PRIMARY KEY(provider,photo_account));";
-		
-	
+
+
 	public static final String KEY_PROVIDER="provider";
 	public static final String KEY_PACCOUNT="photo_account";
 	public static final String KEY_PACCOUNTID="photo_accountid";
 	public static final String KEY_AUTHTOKEN="auth_token";
 	public static final String KEY_AUTHSECRET="auth_secret";
 
-	
-	
+
+
 	public static final String KEY_JOURNALNAME = "journalname";
 	public static final String KEY_AUTHINFO = "authinfo";
 	public static final String KEY_ACCOUNTADDED = "accountadded";  
@@ -93,25 +95,53 @@ public class LJDB
 	public static final String KEY_MASTERSESSION="ljmastersession";
 	public static final String KEY_EXPIRATION="expiration";
 	public static final String KEY_LOGGEDIN="ljloggedin";
-	
-	
+
+
 	private static final String TAGS_CREATE=
 		"create table if not exists tags ("
 		+"_id INTEGER,"
 		+"accountname TEXT,"
 		+"name TEXT,"
 		+"uses INTEGER, PRIMARY KEY(accountname,name));";
-	
+
 	public static final String KEY_USES="uses";
+
+
+
+
+	public static final String DRAFTS_CREATE="create table if not exists drafts("
+		+"_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+		+"accountname text not null,"
+		+"subject text,"
+		+"datesaved INTEGER,"
+		+"event text,"
+		+"picture_keyword text,"
+		+"security text."
+		+"usejournal text,"
+		+"uselocation text,"
+		+"current_location text,"
+		+"current_mood text,"
+		+"taglist text,"
+		+"adult_content text,"
+		+"opt_nocomments text,"
+		+"opt_noemail text,"
+		+"opt_screening text);";
+
+
+	public static final String KEY_DATESAVED="datesaved";
+	public static final String KEY_POST="event";
+	public static final String KEY_PUSERPIC="picture_keyword";
+	public static final String KEY_SECURITY="security";
+	public static final String KEY_USEJOURNAL="usejournal";
+	public static final String KEY_USELOCATION="uselocation";
+	public static final String KEY_CURLOCATION="current_location";
+	public static final String KEY_CURMOOD="current_mood";
+	public static final String KEY_TAGLIST="taglist";
+	public static final String KEY_NOCOMMENTS="opt_nocomments";
+	public static final String KEY_NOEMAIL="opt_noemail";
+	public static final String KEY_ADULTCONTENT="adult_content";
+	public static final String KEY_SCREENCOMMENTS="opt_screening";
 	
-	
-	
-
-
-
-
-
-
 	private static final String FRIENDS_CREATE="create table if not exists friends ("
 		+ "_id INTEGER ,accountname text not null,"
 		+"userpic text,"
@@ -176,7 +206,7 @@ public class LJDB
 	public static final String KEY_VISIBLE = "visible";
 	public static final String KEY_SORTORDER= "sortorder";
 	public static final String KEY_UPDATED="updated";
-	
+
 	private static final String COMMENTS_CREATE=
 		"create table if not exists comments ("
 		+"_id INTEGER,"
@@ -191,11 +221,11 @@ public class LJDB
 		+"thread INTEGER,"
 		+"userpic text,"
 		+"event_raw TEXT, PRIMARY KEY(accountname,ditemid,talkid));";
-	
+
 	public static final String KEY_TALKID="talkid";
 	public static final String KEY_PARENTID="parentid";
 	public static final String KEY_THREAD="thread";
-	
+
 
 	private static final String FRIENDSPAGE_CREATE ="CREATE TABLE if not exists friendspage ( "
 		+ "_id INTEGER ,accountname text not null,"
@@ -215,6 +245,7 @@ public class LJDB
 		+"location text,"
 		+"tagstring text,"
 		+"replycount text,"
+		+"teaser text,"
 		+"snippet text, PRIMARY KEY(accountname,journalname,ditemid));";
 
 	public static final String KEY_LOGTIME = "logtime";
@@ -231,6 +262,7 @@ public class LJDB
 	public static final String KEY_TAGS="tagstring";
 	public static final String KEY_REPLYCOUNT="replycount";
 	public static final String KEY_SNIPPET="snippet";
+	public static final String KEY_TEASER="teaser";
 
 
 	private static final String FRIENDSTRIG="CREATE TRIGGER IF NOT EXISTS delete_friends AFTER DELETE ON accounts BEGIN DELETE FROM friends WHERE accountname=OLD.accountname;END;";
@@ -243,7 +275,7 @@ public class LJDB
 	private static final String TAGSTRIG="CREATE TRIGGER IF NOT EXISTS delete_tags AFTER DELETE ON accounts BEGIN DELETE FROM tags WHERE accountname=OLD.accountname;END;";
 	private static final String PACCOUNTSTRIG="CREATE TRIGGER IF NOT EXISTS delete_paccounts AFTER DELETE ON accounts BEGIN DELETE FROM photo_accounts WHERE accountname=OLD.accountname;END;";
 
-	
+
 	private static final String FRIENDSUTRIG="CREATE TRIGGER IF NOT EXISTS update_friends AFTER UPDATE OF accountname ON accounts BEGIN UPDATE friends SET accoountname=NEW.accountname WHERE accountname=OLD.accountname;END;";
 	private static final String GROUPSUTRIG="CREATE TRIGGER IF NOT EXISTS update_friendgroups AFTER UPDATE OF accountname  ON accounts BEGIN UPDATE friendgroups SET accoountname=NEW.accountname WHERE accountname=OLD.accountname;END;";
 	private static final String FPUTRIG="CREATE TRIGGER IF NOT EXISTS update_friendspage AFTER UPDATE OF accountname  ON accounts BEGIN UPDATE friendspage SET accoountname=NEW.accountname WHERE accountname=OLD.accountname;END;";
@@ -255,10 +287,10 @@ public class LJDB
 	private static final String COMMENTSUTRIG="CREATE TRIGGER IF NOT EXISTS update_comments AFTER UPDATE OF accountname  ON accounts BEGIN UPDATE comments SET accountname=NEW.accountname WHERE accountname=OLD.accountname;END;";
 	private static final String PACCOUNTSUTRIG="CREATE TRIGGER IF NOT EXISTS update_paccounts AFTER UPDATE OF accountname  ON accounts BEGIN UPDATE photo_accounts SET accountname=NEW.accountname WHERE accountname=OLD.accountname;END;";
 
-	
+
 	public static String KEY_PUBLIC="public";
 
-	
+
 
 	private LJDatabaseHelper LJDBHelper;
 	private  SQLiteDatabase db;
@@ -273,16 +305,17 @@ public class LJDB
 	private InsertHelper ihtg;
 	private InsertHelper ihuj;
 	private InsertHelper ihpac;
+	private InsertHelper ihd;
 	private SharedPreferences appPrefs;
 	private static LJDB mDB;
-	
+
 	private LJDB(Context ctx) 
 	{
 		this.context = ctx;
 		LJDBHelper = new LJDatabaseHelper(context);
 		appPrefs=PreferenceManager.getDefaultSharedPreferences(context);
 	}
-	
+
 	public static synchronized LJDB getDB(Context ctx) {
 		if (mDB==null) {
 			mDB=new LJDB(ctx);
@@ -297,7 +330,7 @@ public class LJDB
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
-		
+
 
 		@Override
 		public void onCreate(SQLiteDatabase db) 
@@ -312,7 +345,7 @@ public class LJDB
 			db.execSQL(COMMENTS_CREATE);
 			db.execSQL(TAGS_CREATE);
 			db.execSQL(PHOTOACCOUNTS_CREATE);
-			
+
 			db.execSQL(FRIENDSTRIG);
 			db.execSQL(GROUPSTRIG); 
 			db.execSQL(FPTRIG); 
@@ -320,8 +353,8 @@ public class LJDB
 			db.execSQL(USERPICSTRIG); 
 			db.execSQL(USEJOURNALSTRIG); 
 			db.execSQL(PACCOUNTSTRIG); 
-			
-			
+
+
 			db.execSQL(FRIENDSUTRIG);
 			db.execSQL(GROUPSUTRIG); 
 			db.execSQL(FPUTRIG); 
@@ -329,7 +362,7 @@ public class LJDB
 			db.execSQL(USERPICSUTRIG); 
 			db.execSQL(USEJOURNALSUTRIG); 
 			db.execSQL(PACCOUNTSUTRIG); 
-			
+
 
 		}
 
@@ -337,26 +370,15 @@ public class LJDB
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, 
 				int newVersion) 
 		{
-			Log.w(TAG, "Upgrading database from version " + oldVersion 
-					+ " to "
-					+ newVersion + ", which will destroy all old data");
-			db.execSQL("DROP TABLE IF EXISTS "+ACCOUNTS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+FRIENDS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+FRIENDGROUPS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+FRIENDSPAGE_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+MOODS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+USERPICS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+USEJOURNALS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+COMMENTS_TABLE);
-			db.execSQL("DROP TABLE IF EXISTS "+TAGS_TABLE);
-			onCreate(db);
+			
+			//onCreate(db);
 		}
 	}    
 
 	//---opens the database---
 	public LJDB open() throws SQLException 
 	{
-		
+
 		if(db==null||!db.isOpen()) {
 			db = LJDBHelper.getWritableDatabase();
 			ihac=new InsertHelper(db,ACCOUNTS_TABLE);
@@ -369,25 +391,26 @@ public class LJDB
 			ihc=new InsertHelper(db,COMMENTS_TABLE);
 			ihtg=new InsertHelper(db,TAGS_TABLE);
 			ihpac=new InsertHelper(db,PHOTOACCOUNTS_TABLE);
+			ihd=new InsertHelper(db,DRAFTS_TABLE);
 		}
 		while(db.isDbLockedByCurrentThread() || db.isDbLockedByOtherThreads()){
-			
+
 		}
 		return this;
 	}
 
-	
-	
-	public void finalize() throws Throwable {
-	    if(null != LJDBHelper)
-	        LJDBHelper.close();
-	    if(null != db)
-	        db.close();
-	    super.finalize();
-	}
-	
 
-	
+
+	public void finalize() throws Throwable {
+		if(null != LJDBHelper)
+			LJDBHelper.close();
+		if(null != db)
+			db.close();
+		super.finalize();
+	}
+
+
+
 
 
 
@@ -396,6 +419,8 @@ public class LJDB
 		return ihac.insert(account)>0;
 
 	}
+	
+	
 
 	public boolean deleteAcct(String jname) 
 	{
@@ -405,7 +430,7 @@ public class LJDB
 				"=?", args) > 0;
 	}
 	private final String AccountsASCT=KEY_ACCOUNTADDED+" ASC";
-	
+
 	public Cursor getAllAccounts(String[] columns) 
 	{
 		return db.query(ACCOUNTS_TABLE, columns,null,null,
@@ -413,7 +438,7 @@ public class LJDB
 				null, 
 				AccountsASCT);
 	}
-	
+
 	public boolean insertPhotoAccount(ContentValues account)
 	{
 		return ihpac.replace(account)>0;
@@ -427,7 +452,7 @@ public class LJDB
 		return db.delete(PHOTOACCOUNTS_TABLE, KEY_ACCOUNTNAME+ 
 				"=? AND "+KEY_PACCOUNT+"=?", args) > 0;
 	}
-	
+
 	public Cursor getPhotoAccounts(String[] columns) 
 	{
 		return db.query(PHOTOACCOUNTS_TABLE, columns,null,null,
@@ -441,7 +466,7 @@ public class LJDB
 	{
 		return getRows(ACCOUNTS_TABLE,journalname,null,null,columns);
 	}
-	
+
 	public boolean updatePhotoToken(String provider,String token,String journalname) {
 		String[] args=new String[2];
 		args[1]=journalname;
@@ -474,7 +499,7 @@ public class LJDB
 		}
 		return success;
 	}
-	
+
 	public boolean updateAccountSession(String journalname, ContentValues session) {
 		String[] args={journalname};
 		boolean success=false;
@@ -486,9 +511,9 @@ public class LJDB
 			Log.e(TAG,t.getMessage(),t);
 		}
 		return success;
-		
+
 	}
-	
+
 	public boolean updateReplyCount(String accountname,String journalname, Integer ditemid, ContentValues reply) {
 		String[] args={accountname,journalname,ditemid.toString()};
 		boolean success=false;
@@ -500,9 +525,9 @@ public class LJDB
 			Log.e(TAG,t.getMessage(),t);
 		}
 		return success;
-		
+
 	}
-	
+
 	public boolean updateAccountBasic(LJUserJSON ljuser,String journalname) {
 		String[] args=new String[2];
 		args[1]=journalname;
@@ -516,9 +541,40 @@ public class LJDB
 			Log.e(TAG,t.getMessage(),t);
 		}
 		return success;
+
+	}
+	
+	public long createNewDraft(ContentValues draft) {
+		if (draft==null){
+		draft=new ContentValues();
+		}
+		Date date=new Date();
+		
+		draft.put(KEY_DATESAVED,date.getTime());
+		
+		return ihd.insert(draft);
+		
 		
 	}
 	
+	public boolean deleteDraft(Integer id){
+		String[] args={id.toString()};
+		return db.delete(DRAFTS_TABLE, "_id=?", args)>0;
+		
+	}
+	
+	public Cursor getDrafts(String journalname) {
+		String[] args={journalname};
+		String orderBy=KEY_DATESAVED+"DESC";
+		return db.query(DRAFTS_TABLE, null,KEY_ACCOUNTNAME+"=? AND", args, null, null,orderBy);	
+	}
+	
+	public boolean updateDraft(Integer id, ContentValues draft) {
+		String[] args={id.toString()};
+		return db.update(DRAFTS_TABLE, draft, KEY_ID+"=?", args)>0;
+		
+	}
+
 
 
 	private final String friendsASC=KEY_FRIENDNAME+" ASC";
@@ -527,7 +583,7 @@ public class LJDB
 	{
 		return getRows(FRIENDS_TABLE,journalname,null,friendsASC,columns);
 	}
-	
+
 	public boolean addDummyFriend(ContentValues friend) {
 		boolean success=false;
 		try{ 
@@ -538,22 +594,22 @@ public class LJDB
 		}
 		return success;
 	}
-	
-	
+
+
 	public boolean deleteFriend(ArrayList<CharSequence> del, String accountname) 
 	{
 		boolean success=true;
 		db.beginTransaction();
 		try {
-		for(CharSequence fname:del) {
-			String[] args=new String[2];
-			args[0]=fname.toString();
-			args[1]=accountname;
-			success=success&db.delete(FRIENDS_TABLE, KEY_FRIENDNAME + "=? AND "+KEY_ACCOUNTNAME+"=?;", args)>0;
-			//prune friendspage entries from deleted friend
-			success=success&db.delete(FRIENDSPAGE_TABLE,KEY_JOURNALNAME + "=? AND "+KEY_ACCOUNTNAME+"=?;", args)>0;
-		}
-		db.setTransactionSuccessful();
+			for(CharSequence fname:del) {
+				String[] args=new String[2];
+				args[0]=fname.toString();
+				args[1]=accountname;
+				success=success&db.delete(FRIENDS_TABLE, KEY_FRIENDNAME + "=? AND "+KEY_ACCOUNTNAME+"=?;", args)>0;
+				//prune friendspage entries from deleted friend
+				success=success&db.delete(FRIENDSPAGE_TABLE,KEY_JOURNALNAME + "=? AND "+KEY_ACCOUNTNAME+"=?;", args)>0;
+			}
+			db.setTransactionSuccessful();
 		}
 		catch(Throwable t) {
 			success=false;
@@ -561,22 +617,22 @@ public class LJDB
 		finally {
 			db.endTransaction();
 		}
-;		return success;
+		;		return success;
 	}
-	
+
 	public boolean deleteGroup(ArrayList<CharSequence> del, String accountname) 
 	{
 		boolean success=true;
 		db.beginTransaction();
 		try {
-		for(CharSequence fname:del) {
-			String[] args=new String[2];
-			args[0]=fname.toString();
-			args[1]=accountname;
-			success=success&db.delete(ACCOUNTS_TABLE, KEY_NAME + 
-				"=? AND "+KEY_ACCOUNTNAME+"=?", args)>0;
-		}
-		db.setTransactionSuccessful();
+			for(CharSequence fname:del) {
+				String[] args=new String[2];
+				args[0]=fname.toString();
+				args[1]=accountname;
+				success=success&db.delete(ACCOUNTS_TABLE, KEY_NAME + 
+						"=? AND "+KEY_ACCOUNTNAME+"=?", args)>0;
+			}
+			db.setTransactionSuccessful();
 		}
 		catch(Throwable t) {
 			success=false;
@@ -584,18 +640,18 @@ public class LJDB
 		finally {
 			db.endTransaction();
 		}
-;		return success;
-		
+		;		return success;
+
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	public boolean updateFriends(ContentValues[] friends) {
-		
+
 		boolean success=doInsertion(ihfr,friends);
-		
+
 		String[] args=new String[2];
 		args[0]=friends[0].getAsString("accountname");
 		args[1]=friends[0].getAsLong("updated").toString();
@@ -603,13 +659,13 @@ public class LJDB
 		columns[0]=KEY_FRIENDNAME;
 		Cursor c=db.query(true, FRIENDS_TABLE,columns, KEY_ACCOUNTNAME+"=? AND "+KEY_UPDATED+"<?", args,null, null, null,null);
 		if (c.getCount()>0) {
-		c.moveToFirst();
-		ArrayList<CharSequence> delnames=new ArrayList<CharSequence>();
-		while(!c.isAfterLast()) {
-			delnames.add(c.getString(0));
-			c.moveToNext();
-		}
-		success=success&deleteFriend(delnames,args[0]);
+			c.moveToFirst();
+			ArrayList<CharSequence> delnames=new ArrayList<CharSequence>();
+			while(!c.isAfterLast()) {
+				delnames.add(c.getString(0));
+				c.moveToNext();
+			}
+			success=success&deleteFriend(delnames,args[0]);
 		}
 		c.close();
 		return success;
@@ -618,7 +674,7 @@ public class LJDB
 
 
 
-	
+
 	public boolean addDummyGroup(ContentValues group) {
 		return ihfg.insert(group)>0;
 	}
@@ -649,41 +705,41 @@ public class LJDB
 	}
 
 
-	
+
 	public boolean updateMoods(ContentValues[] newmoods) {
 		return doInsertion(ihm,newmoods);
 	}
-	
+
 	public boolean updateComments(ContentValues[] comments) {
 		return doInsertion(ihc,comments);
 	}
-	
+
 	public boolean updateTags(ContentValues[] tags) {
 		return doInsertion(ihtg,tags);
 	}
-	
-		private boolean doInsertion(InsertHelper ih,ContentValues[] newrows) {
-			db.beginTransaction();
-			 try {
-				 for (int i=0;i<newrows.length;i++) {
-						ih.replace(newrows[i]);
-					}
-			     db.setTransactionSuccessful();
-			   } 
-			 catch(Throwable t) {
-				 Log.e(TAG,t.getMessage(),t);
-				 return false;
-			 }
-			 
-			 	finally {
-			     db.endTransaction();
-			   }
-			 	return true;
-			 
-			
-		
-			
+
+	private boolean doInsertion(InsertHelper ih,ContentValues[] newrows) {
+		db.beginTransaction();
+		try {
+			for (int i=0;i<newrows.length;i++) {
+				ih.replace(newrows[i]);
+			}
+			db.setTransactionSuccessful();
+		} 
+		catch(Throwable t) {
+			Log.e(TAG,t.getMessage(),t);
+			return false;
 		}
+
+		finally {
+			db.endTransaction();
+		}
+		return true;
+
+
+
+
+	}
 
 	private final String moodsASC=KEY_ID+" ASC";
 
@@ -692,9 +748,9 @@ public class LJDB
 	{	
 		return getRows(MOODS_TABLE,journalname,null,moodsASC,columns);
 	}
-	
 
-	
+
+
 	public boolean updateUserPics(ContentValues[] userpics) {
 		Object[] args=new Object[2];
 		args[0]=userpics[0].getAsString("accountname");
@@ -702,7 +758,7 @@ public class LJDB
 		boolean success=doInsertion(ihup,userpics);
 		try {
 			db.execSQL("DELETE FROM userpics WHERE accountname=? AND updated<?;",args);
-			
+
 		}
 		catch (Throwable t) {
 			Log.e(TAG,t.getMessage(),t);
@@ -717,19 +773,19 @@ public class LJDB
 	{
 		return getRows(USERPICS_TABLE,journalname,KEY_URL,null,columns);
 	}
-	
-	
-	
+
+
+
 
 	public boolean updateUseJournals(ContentValues[] usejournals) {
 		Object[] args=new Object[2];
 		args[0]=usejournals[0].getAsString("accountname");
 		args[1]=usejournals[0].getAsLong("updated");
 		boolean success=doInsertion(ihuj,usejournals);
-		
+
 		try {
 			db.execSQL("DELETE FROM usejournals WHERE accountname=? AND updated<?;",args);	
-			}
+		}
 		catch (Throwable t) {
 			Log.e(TAG,t.getMessage(),t);
 		}
@@ -741,12 +797,12 @@ public class LJDB
 
 	public Cursor getUseJournals(String journalname,String[] columns) 
 	{
-		
+
 		return getRows(USEJOURNALS_TABLE,journalname,null,usejournalASC,columns);
-		
+
 	}
-	
-	
+
+
 	public Cursor getMatchingTags(String accountname,String constraint) {
 		String[] columns={"_id",KEY_NAME};
 		String[] args={accountname};
@@ -756,11 +812,11 @@ public class LJDB
 		}
 		catch(Throwable t) {
 			Log.e(TAG,t.getMessage(),t);
-			
+
 		}
 		return c;
 	}
-	
+
 	public Cursor getMatchingMoods(String accountname,String constraint) {
 		String[] columns={"_id",KEY_NAME};
 		String[] args={accountname};
@@ -770,17 +826,17 @@ public class LJDB
 		}
 		catch(Throwable t) {
 			Log.e(TAG,t.getMessage(),t);
-			
+
 		}
 		return c;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	private Cursor getRows(String table,String journalname,String groupBy,String orderBy,String[] columns) {
 		String args[] = new String[1];
 		args[0]=journalname;
@@ -796,25 +852,25 @@ public class LJDB
 		}
 
 		return mCursor;
-		
+
 	}
-	
-	
 
 
 
 
 
 
-	
+
+
+
 
 	public boolean updateFriendsPage(ContentValues[] posts) {
-		
 
 
-		
+
+
 		String[] args={posts[0].getAsString("accountname")};
-		
+
 
 		boolean success=doInsertion(ihfp,posts);
 		//Prune older entries
@@ -831,17 +887,17 @@ public class LJDB
 				Object[] delArgs={args[0],maxTime,1};
 				//delete entries older than the older we want to keep except for starred entries
 				db.execSQL("DELETE FROM friendspage WHERE accountname=? AND logtime<? AND starred!=?;",delArgs);
-				
+
 			}
 			fp.close();
-			
+
 		}
 		catch (Throwable t) {
 			Log.e(TAG,t.getMessage(),t);
 		}
 		return success;
 	}
-	
+
 	public boolean updateStarred(String accountname,Integer ditemid,String journal,Boolean starred){
 		boolean success=false;
 		ContentValues values=new ContentValues();
@@ -853,18 +909,18 @@ public class LJDB
 		catch(Throwable e){
 			Log.e(TAG,e.getMessage(),e);
 		}
-		
+
 		return success;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	private final String fpDESC=KEY_LOGTIME+" DESC";
 	public static final String KEY_STARRED="starred";
-	
+
 	public Cursor getFriendsPage(String accountname,String extraWhere,String[] extraArgs,Integer limit) 
 	{
 		int extra=extraArgs==null?0:extraArgs.length;
@@ -875,12 +931,12 @@ public class LJDB
 			System.arraycopy(extraArgs, 0,args, 1, extra);
 		}
 		Cursor mCursor=null;
-		
+
 		String limitBy=null;
 		if (limit!=null) {
 			limitBy="0, "+String.valueOf(limit);		}
-	
-		
+
+
 		try {
 			mCursor =db.query(true,FRIENDSPAGE_TABLE,null,KEY_ACCOUNTNAME+"=?"+extraWhere,args,null,null,fpDESC,limitBy);
 		}
@@ -893,14 +949,14 @@ public class LJDB
 
 		return mCursor;
 	}
-	
-	
+
+
 	public Cursor getComments(String accountname,int ditemid) 
 	{
-		
+
 		String args[] ={accountname,String.valueOf(ditemid)};
 		Cursor mCursor=null;
-	
+
 		try {
 			mCursor =db.query(COMMENTS_TABLE,null,KEY_ACCOUNTNAME+"=? AND "+KEY_ITEMID+"=?",args,null,null,KEY_THREAD+", "+KEY_PARENTID+", "+KEY_LOGTIME);
 		}
@@ -913,9 +969,9 @@ public class LJDB
 
 		return mCursor;
 	}
-	
-	
-	
+
+
+
 	public void dropTables() {
 		db.execSQL("DROP TABLE IF EXISTS "+ACCOUNTS_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS "+FRIENDS_TABLE);
@@ -926,6 +982,7 @@ public class LJDB
 		db.execSQL("DROP TABLE IF EXISTS "+USERPICS_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS "+FRIENDSPAGE_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS "+USEJOURNALS_TABLE);
+		db.execSQL("DROP TABLE IF EXTSTS "+DRAFTS_TABLE);
 	}
 
 	public void createTables() {
@@ -939,9 +996,10 @@ public class LJDB
 		db.execSQL(USEJOURNALS_CREATE);
 		db.execSQL(TAGS_CREATE);
 		db.execSQL(COMMENTS_CREATE);
-		
+		db.execSQL(DRAFTS_CREATE);
+
 	}
-	
+
 	public void createTriggers() {
 		db.execSQL(FRIENDSTRIG);
 		db.execSQL(GROUPSTRIG); 
@@ -952,8 +1010,8 @@ public class LJDB
 		db.execSQL(TAGSTRIG);
 		db.execSQL(COMMENTSTRIG);
 		db.execSQL(PACCOUNTSTRIG);
-		
-		
+
+
 		db.execSQL(FRIENDSUTRIG);
 		db.execSQL(GROUPSUTRIG); 
 		db.execSQL(FPUTRIG); 
@@ -964,12 +1022,12 @@ public class LJDB
 		db.execSQL(TAGSUTRIG); 
 		db.execSQL(COMMENTSUTRIG); 
 		db.execSQL(PACCOUNTSUTRIG);
-		
+
 	}
 
 	public Cursor getSyn(String journalname) {
 		String[] args = {journalname,"Y"};
-		
+
 		Cursor mCursor=null;
 		try {
 			mCursor =db.query(true,FRIENDSPAGE_TABLE,null,KEY_ACCOUNTNAME+"=? AND "+KEY_JOURNALTYPE+"=?",args,null,null,null,"0,1");
@@ -984,5 +1042,5 @@ public class LJDB
 		return mCursor;
 	}
 
-	
+
 }

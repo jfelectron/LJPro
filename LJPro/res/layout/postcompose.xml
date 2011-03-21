@@ -25,8 +25,8 @@
 	<RelativeLayout  android:background="@drawable/snippet"  android:id="@+id/panelContent" android:layout_height="fill_parent" android:layout_width="fill_parent">
 		<MultiAutoCompleteTextView android:id="@+id/tags" android:layout_width="fill_parent"  android:completionThreshold="1"  android:layout_height="wrap_content" android:hint="Tags"></MultiAutoCompleteTextView>		
 			<AutoCompleteTextView  android:id="@+id/mood" android:layout_below="@+id/tags" android:completionThreshold="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Mood" ></AutoCompleteTextView>
-			<CheckBox android:id="@+id/useloc" android:textColor="#FFFFFF"  android:layout_below="@+id/mood" android:layout_width="wrap_content"  android:layout_height="wrap_content"  android:text="Use Location?"></CheckBox>
-			<EditText android:id="@+id/coordinates"  android:enabled="false" android:layout_toRightOf="@+id/useloc"  android:visibility="gone" android:layout_below="@+id/mood" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Coordinates" ></EditText>
+			<CheckBox android:id="@+id/useloc" android:textColor="#FFFFFF"  android:layout_below="@+id/mood" android:layout_width="wrap_content"  android:layout_height="wrap_content"  android:text="Find Location?"></CheckBox>
+			<EditText android:id="@+id/coordinates"  android:enabled="true" android:layout_toRightOf="@+id/useloc"  android:visibility="gone" android:layout_below="@+id/mood" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Coordinates" ></EditText>
 			<EditText android:id="@+id/locstring" android:layout_below="@+id/useloc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Location" ></EditText>	
 	</RelativeLayout>
 </org.panel.Panel>
@@ -72,9 +72,10 @@
 				android:layout_height="wrap_content" android:layout_width="fill_parent"
 				android:singleLine="true" android:textSize="18dp" android:hint="Subject" />
 				<com.electronapps.LJPro.RichEditText android:layout_weight="1" android:gravity="top" android:layout_below="@+id/postsubject" android:layout_width="fill_parent" android:textSize="18dp" android:id="@+id/postbody" android:minLines="3" android:layout_height="fill_parent" android:hint="Post" android:inputType="textAutoCorrect|textLongMessage|textCapSentences|textMultiLine" android:layout_alignParentRight="true"></com.electronapps.LJPro.RichEditText>
-				<LinearLayout android:orientation="horizontal" android:gravity="right" android:layout_height="70dp" android:layout_width="fill_parent"> 
-			<Button  android:layout_alignParentLeft="true" android:text="Drafts" android:onClick="loadDrafts" android:id="@drawable/plus_button" style="@style/GreenButton" />
-			<Button  android:layout_alignParentRight="true" android:text="Post" android:onClick="addPost" android:id="@drawable/plus_button" style="@style/GreenButton" />
+				<LinearLayout android:orientation="horizontal" android:gravity="right" android:layout_height="wrap_content" android:layout_width="fill_parent"> 
+			<Button  android:layout_alignParentLeft="true" android:text="Drafts"  android:id="@+id/drafts" style="@style/GreenButton" />
+			<Button  android:layout_alignParentLeft="true" android:text="Discard"  android:id="@+id/discard" style="@style/GreenButton" />
+			<Button  android:layout_alignParentRight="true" android:text="Post" android:id="@+id/addpost" style="@style/GreenButton" />
 			</LinearLayout>
 		
 			</LinearLayout>

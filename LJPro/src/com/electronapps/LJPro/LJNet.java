@@ -7,10 +7,15 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,7 +84,7 @@ public class LJNet extends WakefulIntentService {
 	public static final String LJ_ADDCOMMENT="com.electronapps.LJPro.intent.addcomment";
 	public static final String LJ_SYNCITEMS="com.electronapps.LJPro.intent.syncintems";
 	public static final String LJ_GETSESSION="com.electronapps.LJPro.intent.getsession";
-
+	private static final String LJ_POSTUPLOADED ="com.electronapps.LJPro.intent.postuploaded";
 	public static final String LJ_GETCOMMENTS="com.electronapps.LJPro.intent.getcomments";
 	public static final String LJ_XMLERROR="com.electronapps.LJPro.intent.xmlerror";
 	public static final String LJ_CONNECTIONERROR="com.electronapps.LJPro.intent.connectionerror";
@@ -212,6 +217,7 @@ public class LJNet extends WakefulIntentService {
 	    		}
 	    		
 	    		else if (action.equals(LJ_POSTEVENT)) {
+	    			doPostEvent(intent);
 	    			
 	    		}
 	    		
@@ -281,8 +287,47 @@ public class LJNet extends WakefulIntentService {
 	    	
 	  
 	    }
+	   private static final String[] noprops={"subject","event","security","usejournal"};
+	 	private static final ArrayList<String> noProps=new ArrayList<String>(Arrays.asList(noprops));
+		
+	 	
+	    @SuppressWarnings("unchecked")
+		private void doPostEvent(Intent intent) {
 	   
-	    private void uploadPhotoBucket(Intent intent) {
+	    	HashMap<String,Object> result=new HashMap<String,Object>();
+	    	
+	    	 try {
+	    		 ContentValues post=(ContentValues)intent.getParcelableExtra("post");
+	 	    	Set<Entry<String, Object>> postOps=post.valueSet();
+	    	 
+				   HashMap<String,Object> params=initAuth(ljUser);
+				  HashMap<String,Object> props=new HashMap<String,Object>();
+	    	for (Entry<String,Object> entry:postOps){
+	    		if (noProps.indexOf(entry.getKey())!=-1) {
+	    		params.put(entry.getKey(), entry.getValue());
+	    		}
+	    		else {
+	    			props.put(entry.getKey(), entry.getValue());
+	    		}
+	    	}
+	    	params.put("props", props);
+	    	Calendar calendar=Calendar.getInstance();
+	    	params.put("year",calendar.get(Calendar.YEAR));
+	    	params.put("mon", calendar.get(Calendar.MONTH)+1);
+	    	params.put("day", calendar.get(Calendar.DAY_OF_MONTH));
+	    	params.put("hour", calendar.get(Calendar.HOUR_OF_DAY));
+	    	params.put("min", calendar.get(Calendar.MINUTE));
+	    	result=(HashMap<String,Object>) ljclient.call("LJ.XMLRPC.postevent",params);
+	    	if (result.containsKey("url")){
+	    		Intent uploaded=new Intent(LJ_POSTUPLOADED);
+	    	}
+	    	 }
+	    	catch(Throwable e){
+	    		handleError(e.getMessage());
+	    	}
+		}
+		
+		private void uploadPhotoBucket(Intent intent) {
 	    	
 			String file=intent.getStringExtra("file");
 			String title=intent.getStringExtra("title");
@@ -904,7 +949,7 @@ public class LJNet extends WakefulIntentService {
 				post.put("accountname",ljUser.journalname);
 				post.put("ditemid",Integer.parseInt(entry.get("ditemid").toString()));
 				post.put("event_raw",getStringOrUTF(entry,"event_raw"));//.replaceAll("\n","<br><br\\>"));
-				if (post.getAsString("event_raw")!=null) {
+				/*if (post.getAsString("event_raw")!=null) {
 					
 	            	String nohtml=post.getAsString("event_raw").replaceAll("\\<.*?>","");
 	            	String d=nohtml.length()>100?elipsis:empty;	
@@ -912,8 +957,19 @@ public class LJNet extends WakefulIntentService {
 	            		post.put("snippet",StringEscapeUtils.unescapeHtml(nohtml.substring(0, nohtml.length()>100?100:nohtml.length())+d));
 	            	else post.put("snippet","");
 	            	}
-	            else post.put("snippet","");
-	            	
+	            else post.put("snippet","");*/
+				if (post.getAsString("event_raw")!=null) {
+					Document doc=Jsoup.parseBodyFragment(post.getAsString("event_raw"));
+					Elements images=doc.getElementsByTag("img");
+					if (images!=null&&images.size()!=0){
+						Element parent=images.get(0).parent();
+						//avoid stupid social links that use images!
+						if (!(parent.hasAttr("rel")&&parent.attr("rel").equals("nofollow"))) {
+						post.put("teaser", images.get(0).attr("src"));
+						}
+					}
+					
+				}
 	            
 				post.put("journalname",(String) entry.get("journalname"));
 				post.put("journaltype",(String) entry.get("journaltype"));
@@ -1394,7 +1450,9 @@ public class LJNet extends WakefulIntentService {
 				}
 				else {
 				Intent xmlerror=new Intent(LJ_XMLERROR);
-				cUser.close();
+				if (cUser!=null){
+					cUser.close();
+				}
 				
 				sendStickyBroadcast(xmlerror);
 				}

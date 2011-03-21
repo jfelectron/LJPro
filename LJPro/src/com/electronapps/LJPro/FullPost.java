@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.CursorAdapter;
@@ -63,11 +66,12 @@ public class FullPost extends Activity implements SelectionObserver {
         
        
 		}
-	
+	private HorizontalSnapView mSnapview;
 	private class GetPosts extends AsyncTask<Void,Void,Void> {
 
 
 	
+		
 		
 		public GetPosts(Intent intent) {
 			if (mPosition==-1) mPosition=intent.getIntExtra("position",0);
@@ -85,10 +89,10 @@ public class FullPost extends Activity implements SelectionObserver {
 			
 			 final int[] IMAGE_IDS = { R.id.duserpic };
 				m_adapter = new FullPostAdapter(FullPost.this, mCursor, R.layout.fullpost);
-				 HorizontalSnapView snapview=(HorizontalSnapView) findViewById(R.id.fullpostcontainer);
+				mSnapview=(HorizontalSnapView) findViewById(R.id.fullpostcontainer);
 			        
-			    snapview.registerSelectionObserver(FullPost.this);
-				snapview.setAdapter(new ThumbnailAdapter(FullPost.this, m_adapter, imgCache,
+			    mSnapview.registerSelectionObserver(FullPost.this);
+				mSnapview.setAdapter(new ThumbnailAdapter(FullPost.this, m_adapter, imgCache,
 						IMAGE_IDS),mPosition);
 			
 		}
@@ -97,6 +101,67 @@ public class FullPost extends Activity implements SelectionObserver {
 		
 		
 		
+	}
+	
+	public BroadcastReceiver LJFriendsPageReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(LJNet.LJ_FRIENDSPAGEUPDATED)) {
+				abortBroadcast();
+				if (m_adapter!=null) {
+				  updateFriendsPage();
+				}
+			}
+			
+		}
+
+	};
+	
+	private void updateFriendsPage() {
+		
+		
+		Thread thread = new Thread(null, reQueryInBackground,
+				"RefreshFriendsPage Background");
+		try {
+			thread.start();
+		} catch (Throwable e) {
+			Log.e("FULLPOST", e.getMessage(),e);
+		}
+	}
+	
+	private Runnable reQueryInBackground = new Runnable() {
+
+		public void run() {
+			mCursor = LJDBAdapter.getFriendsPage(journalname,mExtraWhere,mExtraArgs,null);
+			updateUI();
+			
+			}
+			
+
+		
+	};
+	
+	
+	Runnable refreshList=new Runnable() { public void run() { 
+		if (m_adapter!=null) m_adapter.changeCursor(mCursor);
+		}};
+	
+	private void updateUI() {
+		runOnUiThread(refreshList);
+	}
+	
+	
+	public void  toggleStarred(int which, Boolean starred){
+		mCursor.moveToPosition(which);
+		try {
+		String journal=mCursor.getString(mCursor.getColumnIndexOrThrow(LJDB.KEY_JOURNALNAME));
+		Integer ditemid=mCursor.getInt(mCursor.getColumnIndexOrThrow(LJDB.KEY_ITEMID));
+		boolean success=LJDBAdapter.updateStarred(journalname, ditemid, journal, starred);
+		}
+		catch(IllegalArgumentException e) {
+			Log.e("FullPost",e.getMessage(),e);
+		}
 	}
 	
 	@Override 
@@ -108,8 +173,24 @@ public class FullPost extends Activity implements SelectionObserver {
 		@Override 
 			public void onPause() {
 			super.onPause();
+			unregisterReceiver(LJFriendsPageReceiver);
 			
 ;		}
+		
+		@Override 
+		protected void onResume() {
+			super.onResume();
+			if (mCursor!=null) {
+				//mCursor.requery();
+				//mSnapview.setSelection(mPosition);
+			}
+			IntentFilter friendfilter = new IntentFilter();
+			friendfilter.setPriority(1);
+			friendfilter.addAction(LJNet.LJ_FRIENDSPAGEUPDATED);
+			
+			registerReceiver(LJFriendsPageReceiver, friendfilter);
+			
+		}
 		
 		public LJDB getDBConn() {
 			return LJDBAdapter;
