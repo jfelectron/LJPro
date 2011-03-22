@@ -115,32 +115,31 @@ public class LJDB
 		+"subject text,"
 		+"datesaved INTEGER,"
 		+"event text,"
-		+"picture_keyword text,"
-		+"security text."
-		+"usejournal text,"
+		+"userpic text,"
+		+"security integer,"
+		+"usejournal integer,"
 		+"uselocation text,"
 		+"current_location text,"
 		+"current_mood text,"
+		+"allowmaks integer"
+		+"screencomments integer,"
 		+"taglist text,"
-		+"adult_content text,"
-		+"opt_nocomments text,"
-		+"opt_noemail text,"
-		+"opt_screening text);";
+		+"adultcontent integer,"
+		+"allowcomments integer);";
 
 
 	public static final String KEY_DATESAVED="datesaved";
 	public static final String KEY_POST="event";
-	public static final String KEY_PUSERPIC="picture_keyword";
 	public static final String KEY_SECURITY="security";
 	public static final String KEY_USEJOURNAL="usejournal";
-	public static final String KEY_USELOCATION="uselocation";
+	public static final String KEY_MOOD="current_mood";
+	public static final String KEY_USELOC="uselocation";
 	public static final String KEY_CURLOCATION="current_location";
-	public static final String KEY_CURMOOD="current_mood";
 	public static final String KEY_TAGLIST="taglist";
-	public static final String KEY_NOCOMMENTS="opt_nocomments";
-	public static final String KEY_NOEMAIL="opt_noemail";
-	public static final String KEY_ADULTCONTENT="adult_content";
-	public static final String KEY_SCREENCOMMENTS="opt_screening";
+	public static final String KEY_ALLOWCOMMENTS="allowcomments";
+	public static final String KEY_ADULTCONTENT="adultcontent";
+	public static final String KEY_ALLOWMASK="allowmask";
+	public static final String KEY_SCREENCOMMENTS="screencomments";
 	
 	private static final String FRIENDS_CREATE="create table if not exists friends ("
 		+ "_id INTEGER ,accountname text not null,"
@@ -345,6 +344,7 @@ public class LJDB
 			db.execSQL(COMMENTS_CREATE);
 			db.execSQL(TAGS_CREATE);
 			db.execSQL(PHOTOACCOUNTS_CREATE);
+			db.execSQL(DRAFTS_CREATE);
 
 			db.execSQL(FRIENDSTRIG);
 			db.execSQL(GROUPSTRIG); 
@@ -569,8 +569,8 @@ public class LJDB
 		return db.query(DRAFTS_TABLE, null,KEY_ACCOUNTNAME+"=? AND", args, null, null,orderBy);	
 	}
 	
-	public boolean updateDraft(Integer id, ContentValues draft) {
-		String[] args={id.toString()};
+	public boolean updateDraft(Long mRowId, ContentValues draft) {
+		String[] args={mRowId.toString()};
 		return db.update(DRAFTS_TABLE, draft, KEY_ID+"=?", args)>0;
 		
 	}

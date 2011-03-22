@@ -7,7 +7,7 @@
 		android:layout_height="60dp"
 		 android:prompt="@string/filterprompt"
          android:background="@drawable/greenbutton"/>
-         <GridView android:id="@+id/postgrid" android:layout_below="@+id/fpfilter" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:numColumns="auto_fit" android:horizontalSpacing="2dp"  android:verticalSpacing="2dp"></GridView>
+         <GridView android:id="@+id/postgrid" android:layout_below="@+id/fpfilter" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:numColumns="auto_fit" android:columnWidth="120dp" android:stretchMode="columnWidth" android:horizontalSpacing="2dp"  android:verticalSpacing="2dp"></GridView>
 <LinearLayout android:id="@+id/updatingfriends" android:orientation="horizontal" android:visibility="gone" android:layout_alignParentBottom="true"  android:background="@color/footer" android:layout_width="fill_parent" android:layout_height="wrap_content">
 
 <TextView android:id="@+id/updatemsg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_gravity="center_vertical" android:textColor="#FFFFFFFF" android:textSize="20dp" android:text="@string/updatingfpage"/>

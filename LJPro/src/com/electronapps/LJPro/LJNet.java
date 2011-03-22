@@ -949,15 +949,7 @@ public class LJNet extends WakefulIntentService {
 				post.put("accountname",ljUser.journalname);
 				post.put("ditemid",Integer.parseInt(entry.get("ditemid").toString()));
 				post.put("event_raw",getStringOrUTF(entry,"event_raw"));//.replaceAll("\n","<br><br\\>"));
-				/*if (post.getAsString("event_raw")!=null) {
-					
-	            	String nohtml=post.getAsString("event_raw").replaceAll("\\<.*?>","");
-	            	String d=nohtml.length()>100?elipsis:empty;	
-	            	if (nohtml.length()>0)
-	            		post.put("snippet",StringEscapeUtils.unescapeHtml(nohtml.substring(0, nohtml.length()>100?100:nohtml.length())+d));
-	            	else post.put("snippet","");
-	            	}
-	            else post.put("snippet","");*/
+				
 				if (post.getAsString("event_raw")!=null) {
 					Document doc=Jsoup.parseBodyFragment(post.getAsString("event_raw"));
 					Elements images=doc.getElementsByTag("img");
@@ -965,10 +957,30 @@ public class LJNet extends WakefulIntentService {
 						Element parent=images.get(0).parent();
 						//avoid stupid social links that use images!
 						if (!(parent.hasAttr("rel")&&parent.attr("rel").equals("nofollow"))) {
-						post.put("teaser", images.get(0).attr("src"));
+						//avoid livejournal static images
+						if(!images.get(0).attr("src").contains("l-stat"))	{
+						
+								post.put("teaser", images.get(0).attr("src"));
+							}
+						else if (images.size()>1&&!images.get(1).attr("src").contains("l-stat")) {
+							post.put("teaser", images.get(1).attr("src"));
 						}
+							
+						}
+						
 					}
 					
+				}
+				if (post.getAsString("teaser")==null) {
+					if (post.getAsString("event_raw")!=null) {
+
+						String nohtml=post.getAsString("event_raw").replaceAll("<[^<>]+>","").replaceAll("http://[^\\s]+","");
+						
+						if (nohtml.length()>0)
+							post.put("snippet",StringEscapeUtils.unescapeHtml(nohtml.substring(0, nohtml.length()>300?300:nohtml.length())));
+						else post.put("snippet","");
+					}
+					else post.put("snippet","");
 				}
 	            
 				post.put("journalname",(String) entry.get("journalname"));

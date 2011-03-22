@@ -50,6 +50,7 @@ public class FPGridAdapter extends CursorAdapter implements FilterQueryProvider{
     private String mAccount;
     Context mContext;
     private int teaserInd;
+	private int snipInd;
 
  
     public FPGridAdapter(Context context, String accountname, Cursor c, int layoutId) {
@@ -82,6 +83,7 @@ public class FPGridAdapter extends CursorAdapter implements FilterQueryProvider{
 		 subjInd=mCursor.getColumnIndex(LJDB.KEY_SUBJECT);
 		 jnameInd=mCursor.getColumnIndex(LJDB.KEY_JOURNALNAME);
 		 jtypeInd=mCursor.getColumnIndex(LJDB.KEY_JOURNALTYPE);
+		 snipInd=mCursor.getColumnIndex(LJDB.KEY_SNIPPET);
 		  upicInd=mCursor.getColumnIndex(LJDB.KEY_USERPIC);
 		  pnameInd=mCursor.getColumnIndex(LJDB.KEY_POSTERNAME);
 		  teaserInd=mCursor.getColumnIndex(LJDB.KEY_TEASER);
@@ -110,6 +112,7 @@ public class FPGridAdapter extends CursorAdapter implements FilterQueryProvider{
 	private static class ViewHolder{
         ImageView preview;
         TextView journalname;
+        TextView snippet;
         TextView postername;
         TextView subject;
 
@@ -131,25 +134,34 @@ public class FPGridAdapter extends CursorAdapter implements FilterQueryProvider{
         holder.journalname.setText(c.getString(jnameInd));
         if (c.getString(jtypeInd).equals("C")) {
         	holder.postername.setText(c.getString(pnameInd));
+        	holder.postername.setVisibility(View.VISIBLE);
         	
         }
         else {
+        	holder.postername.setVisibility(View.GONE);
         	holder.postername.setText("");
         }
        
-   
-        holder.subject.setText(c.getString(subjInd)==null?"":c.getString(subjInd));
+        if (c.getString(subjInd)==null||c.getString(subjInd).length()==0){
+        	holder.subject.setVisibility(View.GONE);
+        }
+        else {
+        	holder.subject.setVisibility(View.VISIBLE);
+        	holder.subject.setText(c.getString(subjInd)==null?"":c.getString(subjInd));
+        }
      
-       holder.preview.setImageResource(-1);
+       holder.preview.setImageResource(R.drawable.empty);
        if (c.getString(teaserInd)!=null) {
+    	   holder.preview.setVisibility(View.VISIBLE);
+    	   holder.snippet.setVisibility(View.GONE);
     	   holder.preview.setTag(c.getString(teaserInd));
        }
-       else if(c.getString(upicInd)!=null){
-    	   holder.preview.setTag(c.getString(upicInd));
-       }
        else {
-    	   
+    	   holder.preview.setVisibility(View.GONE);
+    	   holder.snippet.setVisibility(View.VISIBLE);
+    	   holder.snippet.setText(c.getString(snipInd));
        }
+       
 
        
 	}
@@ -164,7 +176,7 @@ public class FPGridAdapter extends CursorAdapter implements FilterQueryProvider{
          holder.preview=(ImageView) v.findViewById(R.id.imgpreview);
          holder.journalname = (TextView) v.findViewById(R.id.journalname);
          holder.postername=(TextView) v.findViewById(R.id.postername);
-       
+         holder.snippet=(TextView) v.findViewById(R.id.snippet);
          holder.subject=(TextView) v.findViewById(R.id.subject);
   
 	

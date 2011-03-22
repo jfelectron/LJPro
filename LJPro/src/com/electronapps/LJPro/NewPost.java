@@ -136,6 +136,7 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 
 	private SharedPreferences appPrefs;
 
+	private ContentValues mPostData;
 	
 	long mRowId=-1;
 
@@ -146,7 +147,9 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
+		if (savedInstanceState!=null){
+			mPostData=(ContentValues)savedInstanceState.getParcelable("savedPost");
+		}
 		setContentView(R.layout.postcompose);
 		mContext=getApplicationContext();
 		mJournalname=getIntent().getStringExtra("journalname");
@@ -166,8 +169,14 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		appPrefs=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		imgCache = ((LJPro) mContext).getImageCache();
 		mPost=(RichEditText) findViewById(R.id.postbody);
+		
 		mTags=(MultiAutoCompleteTextView) findViewById(R.id.tags);
+		if (mPostData!=null){
+			mTags.setText(mPostData.getAsString("taglist"));
+		}
+		
 		mSecurity=(Spinner) findViewById(R.id.security);
+		//TODO: reppopulate security spinner
 		Button addpost=(Button) findViewById(R.id.addpost);
 		Button drafts=(Button) findViewById(R.id.drafts);
 		addpost.setOnClickListener(new OnClickListener(){
@@ -215,13 +224,19 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		setupButtonHash();
 		setupMiscSpinners();
 	}
-	
+	private String mDefaultUserpic=null;
 	private class SetupPost extends AsyncTask<Void,Void,Void> {
+
+		
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			mDB=LJDB.getDB(getApplicationContext());
 			mDB.open();
+			String[] columns={LJDB.KEY_DEFAULTUSERPIC};
+			Cursor upic=mDB.getAccount(mJournalname, columns);
+			mDefaultUserpic=upic.getString(0);
+			upic.close();
 			return null;
 		}
 		
@@ -262,19 +277,37 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		            this, R.array.allow_comments, android.R.layout.simple_spinner_item);
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		    mAllowComments.setAdapter(adapter);
-		    mAllowComments.setSelection(0);
+		    if (mPostData==null){
+		    	mAllowComments.setSelection(0);
+		    }
+		    else {
+		    	mAllowComments.setSelection(mPostData.getAsInteger(LJDB.KEY_ALLOWCOMMENTS));
+		    }
 		    
 		    adapter = ArrayAdapter.createFromResource(
 		            this, R.array.adult_content, android.R.layout.simple_spinner_item);
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		    mAdultContent.setAdapter(adapter);
-		    mAdultContent.setSelection(0);
+		    if (mPostData==null){
+		    	 mAdultContent.setSelection(0);
+		    }
+		    else {
+		    	mAdultContent.setSelection(mPostData.getAsInteger(LJDB.KEY_ADULTCONTENT));
+		    }
+		 
 		    
 		    adapter = ArrayAdapter.createFromResource(
 		            this, R.array.screen_comments, android.R.layout.simple_spinner_item);
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		    mScreenComments.setAdapter(adapter);
-		    mScreenComments.setSelection(0);
+		  
+		    if (mPostData==null){
+		    	  mScreenComments.setSelection(0);
+		    }
+		    else {
+		    	mScreenComments.setSelection(mPostData.getAsInteger(LJDB.KEY_SCREENCOMMENTS));
+		    }
+		 
 		    
 		    
 		
@@ -287,9 +320,14 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		            this, R.array.security_levels, android.R.layout.simple_spinner_item);
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		    mSecurity.setAdapter(adapter);
-		 
-		    int defsec=Integer.parseInt(appPrefs.getString(mJournalname+"_"+"defaultSecurity", "1"));
-		    mSecurity.setSelection(defsec);
+		    if (mPostData==null){
+		    	int defsec=Integer.parseInt(appPrefs.getString(mJournalname+"_"+"defaultSecurity", "1"));
+			    mSecurity.setSelection(defsec);
+		    }
+		    else {
+		    	mSecurity.setSelection(mPostData.getAsInteger(LJDB.KEY_SECURITY));
+		    }
+		    
 		
 	}
 
@@ -298,6 +336,7 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 	private void setupUseJournals() {
 		String[] columns={"_id",LJDB.KEY_JOURNALNAME};
 		mJournals=mDB.getUseJournals(mJournalname,columns);
+		startManagingCursor(mJournals);
 		mJournals.moveToFirst();
 		int position=0;
 		for (int i=0;i<mJournals.getCount();i++){
@@ -311,7 +350,12 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		SimpleCursorAdapter usej=new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, mJournals, from, to);
 		usej.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mUseJournal.setAdapter(usej);
-		mUseJournal.setSelection(position);
+		if (mPostData==null) {
+			mUseJournal.setSelection(position);
+		}
+		else{
+			mUseJournal.setSelection(mPostData.getAsInteger(LJDB.KEY_USEJOURNAL));
+		}
 		mUseJournal.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -337,8 +381,23 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		String[] columns={"_id",LJDB.KEY_URL,LJDB.KEY_NAME};
 		int[] to={R.id.userpic};
 		mUpicCursor=mDB.getUserPics(mJournalname,columns);
+		startManagingCursor(mUpicCursor);
 		UserpicAdapter upics=new UserpicAdapter(this,mUpicCursor,R.layout.userpicchooser);
 		mUserpics.setAdapter(new ThumbnailAdapter(this, upics, imgCache, to));
+		if (mPostData==null){
+			
+			for (int i=0;i<mUpicCursor.getCount();i++){
+				mUpicCursor.moveToPosition(i);
+				if (mUpicCursor.getString(1).equals(mDefaultUserpic)){
+					mUserpics.setSelection(i);
+					break;
+				}
+			}
+			
+		}
+		else {
+			mUserpics.setSelection(mPostData.getAsInteger(LJDB.KEY_USERPIC));
+		}
 		mUserpics.setSpacing(-25);
 		mUserpics.setAnimationDuration(1000);
 		
@@ -352,6 +411,9 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
                     android.R.layout.simple_dropdown_item_1line, null,
                     from, to);
 		mTags.setAdapter(adapter);
+		if(mPostData!=null){
+			mTags.setText(mPostData.getAsString(LJDB.KEY_TAGLIST));
+		}
 		mTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 	
 		 adapter.setCursorToStringConverter(new CursorToStringConverter() {
@@ -384,7 +446,9 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
                     android.R.layout.simple_dropdown_item_1line, null,
                     from, to);
 		mMood.setAdapter(adapter);
-		
+		if(mPostData!=null){
+			mMood.setText(mPostData.getAsString(LJDB.KEY_MOOD));
+		}
 		 adapter.setCursorToStringConverter(new CursorToStringConverter() {
 	            public String convertToString(android.database.Cursor cursor) {
 	                // Get the label for this row out of the "state" column
@@ -1151,19 +1215,31 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 	public void loadDrafts() {
 		
 	}
-	
-	private ContentValues collectPostData(){
+	private static final int PERSIST=10;
+	private static final int SEND=11;
+	private ContentValues collectPostData(int mode){
 		ContentValues postOptions=new ContentValues();
 
 		int picIndex=mUserpics.getSelectedItemPosition();
-		mUpicCursor.moveToPosition(picIndex);
-		String userpic=mUpicCursor.getString(mUpicCursor.getColumnIndexOrThrow(LJDB.KEY_NAME));
-		postOptions.put("picture_keyword",userpic);
 		int uj=mUseJournal.getSelectedItemPosition();
-		mJournals.moveToPosition(uj);
-		String usejournal=mJournals.getString(mJournals.getColumnIndexOrThrow(LJDB.KEY_JOURNALNAME));
-		postOptions.put("usejournal",usejournal);
+		if (mode==PERSIST){
+			postOptions.put(LJDB.KEY_USERPIC,picIndex);
+			postOptions.put(LJDB.KEY_USEJOURNAL, uj);
+		}
+		else {
+			mUpicCursor.moveToPosition(picIndex);
+			String userpic=mUpicCursor.getString(mUpicCursor.getColumnIndexOrThrow(LJDB.KEY_NAME));
+			postOptions.put("picture_keyword",userpic);
+			mJournals.moveToPosition(uj);
+			String usejournal=mJournals.getString(mJournals.getColumnIndexOrThrow(LJDB.KEY_JOURNALNAME));
+			postOptions.put("usejournal",usejournal);
+		}
 		int i=mSecurity.getSelectedItemPosition();
+		if (mode==PERSIST) {
+			postOptions.put(LJDB.KEY_SECURITY, i);
+			if (i==1) postOptions.put("allowmak",1);
+			else postOptions.put(LJDB.KEY_ALLOWMASK,allowMask.intValue());
+		}
 		switch(i) {
 		case 0:
 			postOptions.put("security","public");
@@ -1180,72 +1256,86 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 			postOptions.put("allowmask",allowMask.intValue());
 		}
 		i=mAdultContent.getSelectedItemPosition();
-		switch(i) {
+		if (mode == PERSIST) {
+			postOptions.put(LJDB.KEY_ADULTCONTENT, i);
 
-		case 0:
-			break;
-		case 1:
-			postOptions.put("adult_content","none");
-			break;
-		case 2:
-			postOptions.put("adult_content","concepts");
-			break;
-		case 3:
-			postOptions.put("adult_content","explicit");
-			break;
+		} else {
+			switch (i) {
+
+			case 0:
+				break;
+			case 1:
+				postOptions.put("adult_content", "none");
+				break;
+			case 2:
+				postOptions.put("adult_content", "concepts");
+				break;
+			case 3:
+				postOptions.put("adult_content", "explicit");
+				break;
+			}
 		}
 		i=mAllowComments.getSelectedItemPosition();
+		if (mode == PERSIST) {
+			postOptions.put(LJDB.KEY_ALLOWCOMMENTS, i);
 
+		} else {
 
-		switch(i){
-		case 0:
-			break;
-		case 1:
-			postOptions.put("opt_nocomments",true);
-			break;
-		case 2:
-			postOptions.put("opt_noemail",true);
-			break;
+			switch(i){
+			case 0:
+				break;
+			case 1:
+				postOptions.put("opt_nocomments",true);
+				break;
+			case 2:
+				postOptions.put("opt_noemail",true);
+				break;
+			}
 		}
 		i=mScreenComments.getSelectedItemPosition();
-		switch(i){
-		case 0:
-			break;
-		case 1:
-			postOptions.put("opt_screening","N");
-			break;
-		case 2:
-			postOptions.put("opt_screening","R");
-			break;
-		case 3:
-			postOptions.put("opt_screening","F");
-			break;
-		case 4:
-			postOptions.put("opt_screening","L");
-			break;
-		case 5:
-			postOptions.put("opt_screening","A");
-			break;
+		if (mode == PERSIST) {
+			postOptions.put(LJDB.KEY_SCREENCOMMENTS, i);
+
+		} else {
+			switch(i){
+			case 0:
+				break;
+			case 1:
+				postOptions.put("opt_screening","N");
+				break;
+			case 2:
+				postOptions.put("opt_screening","R");
+				break;
+			case 3:
+				postOptions.put("opt_screening","F");
+				break;
+			case 4:
+				postOptions.put("opt_screening","L");
+				break;
+			case 5:
+				postOptions.put("opt_screening","A");
+				break;
+			}
 		}
 		String tags=mTags.getText().toString();
 		String mood=mMood.getText().toString();
 		if (tags.length()!=0) {
-			postOptions.put("taglist",tags);
+			postOptions.put(LJDB.KEY_TAGLIST,tags);
 		}
 		if (mood.length()!=0){
-			postOptions.put("current_mood",mood);
+			postOptions.put(LJDB.KEY_MOOD,mood);
 		}
-		postOptions.put("uselocation",mUseLoc.isChecked());
+		postOptions.put(LJDB.KEY_USELOC,mUseLoc.isChecked());
 		String location=mLocation.getText().toString();
 		if (location.length()!=0){
-			postOptions.put("current_location",location);
+			postOptions.put(LJDB.KEY_CURLOCATION,location);
 		}
 
 
 		String postHTML=Html.toHtml(mPost.getEditableText());
 		String subject=mSubject.getText().toString();
-		postOptions.put("event", postHTML);
-		postOptions.put("subject", subject);
+		postOptions.put(LJDB.KEY_POST, postHTML);
+		postOptions.put(LJDB.KEY_SUBJECT, subject);
 		return postOptions;
 	}
 
@@ -1258,7 +1348,7 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		@Override
 		protected Intent doInBackground(Integer... params) {
 			
-			ContentValues postOptions=collectPostData();
+			ContentValues postOptions=collectPostData(SEND);
 
 			Intent newpost=new Intent(LJNet.LJ_POSTEVENT);
 			newpost.putExtra("post",postOptions);
@@ -1335,14 +1425,22 @@ public class NewPost extends Activity implements OnAmbilWarnaListener, LocationC
 		
 	};
 	
+	@Override 
+	protected void onSaveInstanceState(Bundle outstate){
+		super.onSaveInstanceState(outstate);
+		mPostData=collectPostData(PERSIST);
+		outstate.putParcelable("savedPost", mPostData);
+	}
+	
 	@Override
 		protected void onPause() {
 		super.onPause();
-		ContentValues postData=collectPostData();
+		mPostData=collectPostData(PERSIST);
 		if (mRowId==-1){
-			mDB.createNewDraft(postData);
+			mDB.createNewDraft(mPostData);
 		}
 		else {
+			mDB.updateDraft(mRowId, mPostData);
 			
 		}
 		if(mUseLoc.isChecked()){
